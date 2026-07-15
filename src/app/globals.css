@@ -1,0 +1,215 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  ============================================================
+  BHAAMA VEEDHI — Brand Theme
+  ============================================================
+  Primary   (Deep Maroon / Crimson): #5E131D  -> buttons, active states, footers, accents
+  Secondary (Antique Gold):          #B28A42  -> borders, icons, hover text, prices
+  Background (Cream / Warm Off-White):#FCF8F5  -> main app background
+  Text: Dark charcoal / maroon for high contrast
+  Serif headings: Playfair Display  |  Sans body: Inter
+  ============================================================
+*/
+
+@theme inline {
+  /* Direct brand tokens (usable as bg-maroon, text-gold, bg-cream, font-serif) */
+  --color-maroon: #5E131D;
+  --color-maroon-light: #7A2230;
+  --color-maroon-dark: #420D14;
+  --color-gold: #B28A42;
+  --color-gold-light: #C9A45E;
+  --color-gold-dark: #8E6C2C;
+  --color-cream: #FCF8F5;
+  --color-cream-deep: #F3E9DE;
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+
+  /* shadcn token mapping (keeps existing UI components on-brand) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Cinematic animations */
+  --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.8s ease-out both;
+  --animate-scale-in: scale-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.06); }
+}
+
+:root {
+  --radius: 0.5rem;
+  /* Brand palette wired into shadcn tokens */
+  --background: #FCF8F5;            /* cream */
+  --foreground: #2A1518;            /* dark maroon-charcoal */
+  --card: #FFFFFF;
+  --card-foreground: #2A1518;
+  --popover: #FFFFFF;
+  --popover-foreground: #2A1518;
+  --primary: #5E131D;               /* deep maroon */
+  --primary-foreground: #FCF8F5;    /* cream */
+  --secondary: #B28A42;             /* antique gold */
+  --secondary-foreground: #FFFFFF;
+  --muted: #F3E9DE;                 /* warm muted */
+  --muted-foreground: #6B5B4F;
+  --accent: #F6E9D6;                /* soft gold tint */
+  --accent-foreground: #5E131D;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #E5D9CC;                /* warm border */
+  --input: #E5D9CC;
+  --ring: #B28A42;                  /* gold focus ring */
+  --chart-1: #5E131D;
+  --chart-2: #B28A42;
+  --chart-3: #C9A45E;
+  --chart-4: #7A2230;
+  --chart-5: #8E6C2C;
+  --sidebar: #FCF8F5;
+  --sidebar-foreground: #2A1518;
+  --sidebar-primary: #5E131D;
+  --sidebar-primary-foreground: #FCF8F5;
+  --sidebar-accent: #F6E9D6;
+  --sidebar-accent-foreground: #5E131D;
+  --sidebar-border: #E5D9CC;
+  --sidebar-ring: #B28A42;
+}
+
+.dark {
+  --background: #1A0E10;
+  --foreground: #FCF8F5;
+  --card: #26141A;
+  --card-foreground: #FCF8F5;
+  --popover: #26141A;
+  --popover-foreground: #FCF8F5;
+  --primary: #B28A42;
+  --primary-foreground: #1A0E10;
+  --secondary: #5E131D;
+  --secondary-foreground: #FCF8F5;
+  --muted: #311A20;
+  --muted-foreground: #C9B9AC;
+  --accent: #311A20;
+  --accent-foreground: #FCF8F5;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: #3a2228;
+  --input: #3a2228;
+  --ring: #B28A42;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom scrollbar for the premium feel */
+@layer utilities {
+  .scrollbar-elegant::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-elegant::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-elegant::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 9999px;
+  }
+  .scrollbar-elegant::-webkit-scrollbar-thumb:hover {
+    background: var(--maroon);
+  }
+
+  /* Gold gradient text for elegant headings/prices */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #C9A45E 0%, #B28A42 50%, #8E6C2C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Cinematic gold glow used behind hero accents */
+  .glow-gold {
+    animation: glow-pulse 6s ease-in-out infinite;
+  }
+
+  /* Animated shimmer underline for nav links */
+  .nav-underline {
+    position: relative;
+  }
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 2px;
+    width: 0;
+    background: var(--gold);
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .nav-underline:hover::after,
+  .nav-underline[data-active="true"]::after {
+    width: 100%;
+  }
+}

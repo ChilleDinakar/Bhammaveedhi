@@ -1,0 +1,48 @@
+// ============================================================
+// Bhaama Veedhi — Prisma Schema
+// (Adapts the Firestore schema requirement to Prisma + SQLite.)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/*
+  Product document — mirrors the requested Firestore structure:
+  {
+    id, title, description, currentPrice, previousPrice (optional),
+    imageUrl, inStock, createdAt
+  }
+  Plus an optional `category` for storefront filtering.
+*/
+model Product {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  currentPrice  Int
+  previousPrice Int?
+  imageUrl      String
+  category      String   @default("All")
+  inStock       Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+/*
+  User accounts for the storefront (email/password auth).
+  Admin access is role-based; the admin account is seeded with role "ADMIN".
+*/
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
