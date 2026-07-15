@@ -20,7 +20,8 @@ type SeedProduct = {
   description: string;
   currentPrice: number;
   previousPrice?: number;
-  imageUrl: string;
+  // Array of image URLs; stored as a JSON string in the `images` column.
+  images: string[];
   category: string;
   inStock: boolean;
 };
@@ -32,7 +33,7 @@ const products: SeedProduct[] = [
       "A regal emerald and antique-gold vine necklace handcrafted with intricate filigree. Delicate green emeralds trail along an ornate gold vine — a statement of timeless grace for the woman who carries tradition with confidence.",
     currentPrice: 12499,
     previousPrice: 16999,
-    imageUrl: "/products/necklace-vine.png",
+    images: ["/products/necklace-vine.png", "/products/necklace-pearl.png"],
     category: "Necklaces",
     inStock: true,
   },
@@ -42,7 +43,7 @@ const products: SeedProduct[] = [
       "Mughal-inspired chandbali earrings in antique gold with cascading ruby drops. The crescent silhouette catches light from every angle, framing the face with old-world charm and a whisper of royalty.",
     currentPrice: 5499,
     previousPrice: 7999,
-    imageUrl: "/products/earrings-chandbali.png",
+    images: ["/products/earrings-chandbali.png", "/products/earrings-stud.png"],
     category: "Earrings",
     inStock: true,
   },
@@ -52,7 +53,7 @@ const products: SeedProduct[] = [
       "A pair of heritage kada bangles engraved with traditional motifs. The broad antique-gold canvas showcases master engraving — bold, classic, and made to be passed down through generations.",
     currentPrice: 8999,
     previousPrice: 11999,
-    imageUrl: "/products/bangle-kada.png",
+    images: ["/products/bangle-kada.png", "/products/bangle-stack.png"],
     category: "Bangles",
     inStock: true,
   },
@@ -61,7 +62,7 @@ const products: SeedProduct[] = [
     description:
       "A brilliant solitaire diamond set on a slender gold band. Minimalist yet luminous — the everyday luxury that marks a moment, a promise, or simply a love for fine things.",
     currentPrice: 7299,
-    imageUrl: "/products/ring-solitaire.png",
+    images: ["/products/ring-solitaire.png", "/products/ring-cocktail.png"],
     category: "Rings",
     inStock: true,
   },
@@ -71,7 +72,7 @@ const products: SeedProduct[] = [
       "South Indian temple jewellery at its finest — a gold necklace bearing goddess motifs and uncut rubies. Each detail is a tribute to devotion, craftsmanship, and the eternal feminine.",
     currentPrice: 18999,
     previousPrice: 24999,
-    imageUrl: "/products/necklace-temple.png",
+    images: ["/products/necklace-temple.png"],
     category: "Necklaces",
     inStock: true,
   },
@@ -81,7 +82,7 @@ const products: SeedProduct[] = [
       "Freshwater pearl drops suspended from delicate gold studs. Soft, luminous and quietly elegant — the perfect everyday sparkle that transitions effortlessly from day to evening.",
     currentPrice: 2499,
     previousPrice: 3499,
-    imageUrl: "/products/earrings-stud.png",
+    images: ["/products/earrings-stud.png"],
     category: "Earrings",
     inStock: true,
   },
@@ -91,7 +92,7 @@ const products: SeedProduct[] = [
       "A curated stack of slender gold bangles accented with delicate gemstones. Light, rhythmic and full of movement — wear them together for a chorus of sparkle or singly for a quiet glow.",
     currentPrice: 6499,
     previousPrice: 8499,
-    imageUrl: "/products/bangle-stack.png",
+    images: ["/products/bangle-stack.png", "/products/bangle-kada.png"],
     category: "Bangles",
     inStock: true,
   },
@@ -101,7 +102,7 @@ const products: SeedProduct[] = [
       "Strands of luminous freshwater pearls layered with fine gold accents. A modern heirloom that drapes the neckline in soft, cinematic light — elegant for the everyday, unforgettable for the occasion.",
     currentPrice: 4999,
     previousPrice: 6999,
-    imageUrl: "/products/necklace-pearl.png",
+    images: ["/products/necklace-pearl.png", "/products/necklace-vine.png"],
     category: "Necklaces",
     inStock: true,
   },
@@ -111,7 +112,7 @@ const products: SeedProduct[] = [
       "A bold cocktail ring centring a deep emerald framed by a halo of diamonds on antique gold. Designed to be noticed — a single piece that completes the look and the story.",
     currentPrice: 9999,
     previousPrice: 13999,
-    imageUrl: "/products/ring-cocktail.png",
+    images: ["/products/ring-cocktail.png", "/products/ring-solitaire.png"],
     category: "Rings",
     inStock: true,
   },
@@ -136,7 +137,18 @@ async function main() {
   // Products — clear & reseed for idempotency
   await db.product.deleteMany({});
   for (const p of products) {
-    await db.product.create({ data: p });
+    await db.product.create({
+      data: {
+        title: p.title,
+        description: p.description,
+        currentPrice: p.currentPrice,
+        previousPrice: p.previousPrice ?? null,
+        // Store the image array as a JSON string (SQLite has no scalar list).
+        images: JSON.stringify(p.images),
+        category: p.category,
+        inStock: p.inStock,
+      },
+    });
   }
   console.log(`✓ Seeded ${products.length} products`);
 

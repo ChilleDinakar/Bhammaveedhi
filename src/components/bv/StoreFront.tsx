@@ -3,23 +3,33 @@
 /**
  * BHAAMA VEEDHI — Storefront
  * Composes the Hero, category filter, and responsive product gallery.
- * Fetches products from /api/products (filtered client-side by category).
+ * Fetches products from /api/products and stores them in the shared Zustand
+ * store so the Navbar can derive its category links dynamically.
+ * Category chips are derived from the products themselves — any category the
+ * admin types in shows up here automatically.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Loader2, PackageOpen } from "lucide-react";
 import { Hero } from "./Hero";
 import { ProductCard } from "./ProductCard";
-import { useStore, type Product } from "@/store/useStore";
+import { useStore } from "@/store/useStore";
 import { cn } from "@/lib/utils";
 
-const CATEGORIES = ["All", "Necklaces", "Earrings", "Bangles", "Rings"];
-
 export function StoreFront() {
-  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const products = useStore((s) => s.products);
+  const setProducts = useStore((s) => s.setProducts);
   const activeCategory = useStore((s) => s.activeCategory);
   const setCategory = useStore((s) => s.setCategory);
+  // Derive categories from the catalogue (memoized for a stable array identity).
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    products.forEach((p) => {
+      if (p.category && p.category.trim()) set.add(p.category.trim());
+    });
+    return ["All", ...Array.from(set)];
+  }, [products]);
 
   useEffect(() => {
     let cancelled = false;
@@ -38,12 +48,14 @@ export function StoreFront() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [setProducts]);
 
   const filtered =
     activeCategory === "All"
       ? products
-      : products.filter((p) => p.category === activeCategory);
+      : products.filter(
+          (p) => p.category.trim().toLowerCase() === activeCategory.trim().toLowerCase()
+        );
 
   return (
     <>
@@ -89,15 +101,15 @@ export function StoreFront() {
           </motion.p>
         </div>
 
-        {/* Category filter */}
+        {/* Category filter (derived dynamically from the catalogue) */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setCategory(cat)}
               className={cn(
                 "rounded-full px-5 py-2 text-sm font-medium transition-all",
-                activeCategory === cat
+                activeCategory.trim().toLowerCase() === cat.trim().toLowerCase()
                   ? "bg-maroon text-cream shadow-md"
                   : "border border-gold/30 bg-white text-foreground/70 hover:border-gold hover:text-maroon"
               )}

@@ -20,7 +20,7 @@ export type Product = {
   description: string;
   currentPrice: number;
   previousPrice: number | null;
-  imageUrl: string;
+  images: string[]; // multiple images per product; images[0] is the cover
   category: string;
   inStock: boolean;
   createdAt: string;
@@ -51,6 +51,9 @@ type StoreState = {
   quickViewProduct: Product | null;
   /* Filters */
   activeCategory: string;
+  /* Shared product catalogue (fetched by StoreFront; read by Navbar
+     to derive dynamic category links). Not persisted. */
+  products: Product[];
 
   /* Cart actions */
   addToCart: (product: Product, quantity?: number) => void;
@@ -73,6 +76,9 @@ type StoreState = {
 
   /* Filters */
   setCategory: (category: string) => void;
+
+  /* Catalogue */
+  setProducts: (products: Product[]) => void;
 };
 
 export const useStore = create<StoreState>()(
@@ -84,6 +90,7 @@ export const useStore = create<StoreState>()(
       user: null,
       quickViewProduct: null,
       activeCategory: "All",
+      products: [],
 
       addToCart: (product, quantity = 1) => {
         const items = get().items;
@@ -135,6 +142,8 @@ export const useStore = create<StoreState>()(
       closeQuickView: () => set({ quickViewProduct: null }),
 
       setCategory: (category) => set({ activeCategory: category }),
+
+      setProducts: (products) => set({ products }),
     }),
     {
       name: "bhaama-veedhi-store",
@@ -153,3 +162,10 @@ export const selectCartCount = (s: StoreState) =>
 
 export const selectCartTotal = (s: StoreState) =>
   s.items.reduce((sum, i) => sum + i.product.currentPrice * i.quantity, 0);
+
+/*
+ * NOTE: Categories are derived in the components via `useMemo` over the
+ * `products` array (a stable store reference) rather than a selector.
+ * A selector returning `["All", ...set]` would create a fresh array each
+ * call and break Zustand's snapshot caching (infinite re-render loop).
+ */

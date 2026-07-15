@@ -7,7 +7,13 @@
  *  - Protected: checks /api/auth/session on mount; non-admins are
  *    redirected to the login view.
  *  - Inventory Management UI:
- *      • Add/Edit Product form (with image upload -> /api/upload)
+ *      • Add/Edit Product form
+ *          - Category: OPEN text field (admin can type any category;
+ *            existing categories are offered as suggestions via a datalist).
+ *          - Images: MULTIPLE image uploads — pick several files at once,
+ *            each is uploaded to /api/upload and appended to the product's
+ *            image list. Thumbnails can be removed individually. The first
+ *            image is the cover.
  *      • Product list table with Edit & Delete actions
  * ============================================================
  */
@@ -24,6 +30,7 @@ import {
   LogOut,
   Store,
   Image as ImageIcon,
+  GripVertical,
 } from "lucide-react";
 import { useStore, type Product } from "@/store/useStore";
 import { formatINR } from "@/lib/format";
@@ -32,13 +39,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,16 +51,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 
-const CATEGORIES = ["Necklaces", "Earrings", "Bangles", "Rings"];
-
 type FormState = {
   id?: string;
   title: string;
   description: string;
   currentPrice: string;
   previousPrice: string;
-  imageUrl: string;
-  category: string;
+  images: string[]; // multiple images; images[0] is the cover
+  category: string; // open text — admin can type anything
   inStock: boolean;
 };
 
@@ -69,8 +67,8 @@ const EMPTY_FORM: FormState = {
   description: "",
   currentPrice: "",
   previousPrice: "",
-  imageUrl: "",
-  category: "Necklaces",
+  images: [],
+  category: "",
   inStock: true,
 };
 
@@ -87,7 +85,13 @@ export function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
+  const [manualUrl, setManualUrl] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
+
+  /* Existing categories -> offered as suggestions in the open category field */
+  const existingCategories = Array.from(
+    new Set(products.map((p) => p.category).filter(Boolean))
+  );
 
   /* ---- Auth guard ---- */
   useEffect(() => {
@@ -109,8 +113,7 @@ export function AdminDashboard() {
         setView("login");
       }
     })();
-     
-  }, []);
+  }, [setView, toast]);
 
   /* ---- Fetch products ---- */
   const fetchProducts = async () => {
@@ -130,42 +133,68 @@ export function AdminDashboard() {
     if (authChecked) fetchProducts();
   }, [authChecked]);
 
-  /* ---- Image upload ---- */
-  const handleUpload = async (file: File) => {
+  /* ---- Multiple image upload ---- */
+  const handleUploadMultiple = async (files: FileList | File[]) => {
+    const list = Array.from(files);
+    if (list.length === 0) return;
     setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) {
-        toast({
-          title: "Upload failed",
-          description: data.error || "Please try again.",
-          variant: "destructive",
-        });
-        return;
+    const uploaded: string[] = [];
+    for (const file of list) {
+      try {
+        const fd = new FormData();
+        fd.append("file", file);
+        const res = await fetch("/api/upload", { method: "POST", body: fd });
+        const data = await res.json();
+        if (res.ok && data.url) uploaded.push(data.url as string);
+      } catch {
+        /* skip this file */
       }
-      setForm((f) => ({ ...f, imageUrl: data.url }));
-      toast({ title: "Image uploaded ✨" });
-    } catch {
+    }
+    setForm((f) => ({ ...f, images: [...f.images, ...uploaded] }));
+    setUploading(false);
+    if (uploaded.length > 0) {
       toast({
-        title: "Upload failed",
-        description: "Please try again.",
+        title: `${uploaded.length} image${uploaded.length > 1 ? "s" : ""} uploaded ✨`,
+      });
+    }
+    if (uploaded.length < list.length) {
+      toast({
+        title: "Some uploads failed",
+        description: `${list.length - uploaded.length} file(s) could not be uploaded.`,
         variant: "destructive",
       });
-    } finally {
-      setUploading(false);
     }
+  };
+
+  /** Remove an image by index. */
+  const removeImage = (idx: number) =>
+    setForm((f) => ({ ...f, images: f.images.filter((_, i) => i !== idx) }));
+
+  /** Move an image up (so the admin can set the cover / reorder). */
+  const moveImage = (idx: number, dir: -1 | 1) =>
+    setForm((f) => {
+      const next = [...f.images];
+      const target = idx + dir;
+      if (target < 0 || target >= next.length) return f;
+      [next[idx], next[target]] = [next[target], next[idx]];
+      return { ...f, images: next };
+    });
+
+  /** Add a manual image URL from the URL input. */
+  const addManualUrl = () => {
+    const clean = manualUrl.trim();
+    if (!clean) return;
+    setForm((f) => ({ ...f, images: [...f.images, clean] }));
+    setManualUrl("");
   };
 
   /* ---- Submit (add or edit) ---- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title || !form.description || !form.currentPrice || !form.imageUrl) {
+    if (!form.title || !form.description || !form.currentPrice || form.images.length === 0) {
       toast({
         title: "Missing fields",
-        description: "Title, description, price and image are required.",
+        description: "Title, description, price and at least one image are required.",
         variant: "destructive",
       });
       return;
@@ -177,8 +206,8 @@ export function AdminDashboard() {
         description: form.description,
         currentPrice: Number(form.currentPrice),
         previousPrice: form.previousPrice ? Number(form.previousPrice) : null,
-        imageUrl: form.imageUrl,
-        category: form.category,
+        images: form.images,
+        category: form.category.trim() || "All",
         inStock: form.inStock,
       };
 
@@ -230,7 +259,7 @@ export function AdminDashboard() {
       description: p.description,
       currentPrice: String(p.currentPrice),
       previousPrice: p.previousPrice ? String(p.previousPrice) : "",
-      imageUrl: p.imageUrl,
+      images: p.images && p.images.length > 0 ? [...p.images] : [],
       category: p.category,
       inStock: p.inStock,
     });
@@ -403,21 +432,31 @@ export function AdminDashboard() {
                   </div>
                 </div>
 
+                {/* Category — OPEN text field (admin can type any value) */}
                 <div className="space-y-1.5">
-                  <Label className="text-maroon">Category</Label>
-                  <Select
+                  <Label htmlFor="category" className="text-maroon">
+                    Category{" "}
+                    <span className="text-xs font-normal text-muted-foreground">
+                      (type any category you need)
+                    </span>
+                  </Label>
+                  <Input
+                    id="category"
+                    list="bv-categories"
                     value={form.category}
-                    onValueChange={(v) => setForm({ ...form, category: v })}
-                  >
-                    <SelectTrigger className="border-gold/30 focus:ring-gold">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CATEGORIES.map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    placeholder="e.g. Necklaces, Bridal, Festive, Everyday…"
+                    className="border-gold/30 focus-visible:ring-gold"
+                  />
+                  <datalist id="bv-categories">
+                    {existingCategories.map((c) => (
+                      <option key={c} value={c} />
+                    ))}
+                  </datalist>
+                  <p className="text-xs text-muted-foreground">
+                    This is an open field — enter whatever fits your collection.
+                    Existing categories are suggested as you type.
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -433,59 +472,136 @@ export function AdminDashboard() {
                   </Label>
                 </div>
 
-                {/* Image upload */}
-                <div className="space-y-1.5">
-                  <Label className="text-maroon">Product Image</Label>
-                  <div className="flex items-center gap-3">
-                    <div className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-gold/30 bg-cream-deep">
-                      {form.imageUrl ? (
-                         
-                        <img src={form.imageUrl} alt="preview" className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                          <ImageIcon className="size-6" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <input
-                        ref={fileRef}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => {
-                          const f = e.target.files?.[0];
-                          if (f) handleUpload(f);
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => fileRef.current?.click()}
-                        disabled={uploading}
-                        className="border-gold/40 text-maroon hover:bg-accent"
-                      >
-                        {uploading ? (
-                          <Loader2 className="size-4 animate-spin" />
-                        ) : (
-                          <Upload className="size-4" />
-                        )}
-                        {uploading ? "Uploading…" : "Upload Image"}
-                      </Button>
-                      {form.imageUrl && (
-                        <p className="mt-1 text-xs text-green-700">Image ready ✓</p>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Or paste an image URL:
-                  </p>
-                  <Input
-                    value={form.imageUrl}
-                    onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                    placeholder="/products/necklace-vine.png"
-                    className="border-gold/30 focus-visible:ring-gold"
+                {/* Multiple image uploads */}
+                <div className="space-y-2">
+                  <Label className="text-maroon">
+                    Product Images{" "}
+                    <span className="text-xs font-normal text-muted-foreground">
+                      (multiple allowed — the first is the cover)
+                    </span>
+                  </Label>
+
+                  {/* Upload button + dropzone */}
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        handleUploadMultiple(e.target.files);
+                        e.target.value = ""; // allow re-selecting same files
+                      }
+                    }}
                   />
+                  <button
+                    type="button"
+                    onClick={() => fileRef.current?.click()}
+                    disabled={uploading}
+                    className="flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gold/40 bg-cream-deep/30 px-4 py-6 text-center transition-colors hover:border-gold hover:bg-cream-deep/50 disabled:opacity-60"
+                  >
+                    {uploading ? (
+                      <Loader2 className="size-6 animate-spin text-gold-dark" />
+                    ) : (
+                      <Upload className="size-6 text-gold-dark" />
+                    )}
+                    <span className="text-sm font-medium text-maroon">
+                      {uploading ? "Uploading…" : "Click to upload multiple images"}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      PNG, JPG, WEBP — up to 6MB each
+                    </span>
+                  </button>
+
+                  {/* Thumbnails grid with remove + reorder */}
+                  {form.images.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                      {form.images.map((src, idx) => (
+                        <div
+                          key={idx}
+                          className="group relative aspect-square overflow-hidden rounded-lg border border-gold/30 bg-cream-deep"
+                        >
+                          { }
+                          <img src={src} alt={`Product image ${idx + 1}`} className="h-full w-full object-cover" />
+
+                          {/* Cover badge */}
+                          {idx === 0 && (
+                            <span className="absolute left-1 top-1 rounded bg-maroon px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-cream">
+                              Cover
+                            </span>
+                          )}
+
+                          {/* Remove */}
+                          <button
+                            type="button"
+                            onClick={() => removeImage(idx)}
+                            className="absolute right-1 top-1 flex size-6 items-center justify-center rounded-full bg-maroon/90 text-cream transition-colors hover:bg-maroon"
+                            aria-label={`Remove image ${idx + 1}`}
+                          >
+                            <X className="size-3.5" />
+                          </button>
+
+                          {/* Reorder controls */}
+                          <div className="absolute inset-x-1 bottom-1 flex items-center justify-between opacity-0 transition-opacity group-hover:opacity-100">
+                            <button
+                              type="button"
+                              onClick={() => moveImage(idx, -1)}
+                              disabled={idx === 0}
+                              className="flex size-6 items-center justify-center rounded-full bg-cream/90 text-maroon shadow disabled:opacity-30"
+                              aria-label="Move left"
+                            >
+                              <span className="text-xs">‹</span>
+                            </button>
+                            <GripVertical className="size-3.5 text-cream drop-shadow" />
+                            <button
+                              type="button"
+                              onClick={() => moveImage(idx, 1)}
+                              disabled={idx === form.images.length - 1}
+                              className="flex size-6 items-center justify-center rounded-full bg-cream/90 text-maroon shadow disabled:opacity-30"
+                              aria-label="Move right"
+                            >
+                              <span className="text-xs">›</span>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 rounded-lg border border-gold/20 bg-cream-deep/20 px-3 py-3 text-xs text-muted-foreground">
+                      <ImageIcon className="size-4 text-gold-dark" />
+                      No images yet — upload at least one.
+                    </div>
+                  )}
+
+                  {/* Manual URL entry (NOT a nested form — uses type="button"
+                      so it never submits the outer product form) */}
+                  <p className="pt-1 text-xs text-muted-foreground">
+                    Or add an image URL:
+                  </p>
+                  <div className="flex gap-2">
+                    <Input
+                      value={manualUrl}
+                      onChange={(e) => setManualUrl(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addManualUrl();
+                        }
+                      }}
+                      placeholder="/products/necklace-vine.png"
+                      className="border-gold/30 focus-visible:ring-gold"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addManualUrl}
+                      variant="outline"
+                      className="border-gold/40 text-maroon hover:bg-accent"
+                      aria-label="Add image URL"
+                    >
+                      <Plus className="size-4" />
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="flex gap-2 pt-2">
@@ -548,9 +664,14 @@ export function AdminDashboard() {
                         <tr key={p.id} className="transition-colors hover:bg-cream-deep/30">
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
-                              <div className="size-12 shrink-0 overflow-hidden rounded-md bg-cream-deep">
+                              <div className="relative size-12 shrink-0 overflow-hidden rounded-md bg-cream-deep">
                                 { }
-                                <img src={p.imageUrl} alt={p.title} className="h-full w-full object-cover" />
+                                <img src={p.images[0]} alt={p.title} className="h-full w-full object-cover" />
+                                {p.images.length > 1 && (
+                                  <span className="absolute -right-0.5 -top-0.5 flex min-w-4 h-4 items-center justify-center rounded-full bg-gold px-1 text-[9px] font-bold text-white shadow ring-1 ring-cream">
+                                    {p.images.length}
+                                  </span>
+                                )}
                               </div>
                               <span className="font-medium text-maroon line-clamp-1">
                                 {p.title}

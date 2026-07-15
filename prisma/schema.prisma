@@ -13,12 +13,18 @@ datasource db {
 }
 
 /*
-  Product document — mirrors the requested Firestore structure:
+  Product document — adapts the requested Firestore structure:
   {
     id, title, description, currentPrice, previousPrice (optional),
-    imageUrl, inStock, createdAt
+    images[], category, inStock, createdAt
   }
-  Plus an optional `category` for storefront filtering.
+  - `images`: JSON-encoded array of image URL strings (SQLite can't store a
+    scalar list directly, so we keep it as a String holding a JSON array).
+    The API layer serializes (stringify) on write and deserializes (parse)
+    on read so the frontend always receives `images: string[]`.
+  - `category`: a free-text field the admin can fill with any value
+    (e.g. "Necklaces", "Bridal", "Festive"). The storefront + navbar derive
+    their filter chips dynamically from the distinct categories in use.
 */
 model Product {
   id            String   @id @default(cuid())
@@ -26,7 +32,7 @@ model Product {
   description   String
   currentPrice  Int
   previousPrice Int?
-  imageUrl      String
+  images        String   @default("[]")
   category      String   @default("All")
   inStock       Boolean  @default(true)
   createdAt     DateTime @default(now())

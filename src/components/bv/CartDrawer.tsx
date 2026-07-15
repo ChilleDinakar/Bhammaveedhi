@@ -104,7 +104,7 @@ export function CartDrawer() {
                     <div className="size-20 shrink-0 overflow-hidden rounded-lg bg-cream-deep">
                       { }
                       <img
-                        src={item.product.imageUrl}
+                        src={item.product.images[0]}
                         alt={item.product.title}
                         className="h-full w-full object-cover"
                       />

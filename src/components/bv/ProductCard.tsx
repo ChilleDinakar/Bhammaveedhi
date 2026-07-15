@@ -50,7 +50,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       >
         { }
         <img
-          src={product.imageUrl}
+          src={product.images[0]}
           alt={product.title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -66,6 +66,11 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
           {!product.inStock && (
             <Badge className="bg-muted text-muted-foreground shadow hover:bg-muted">
               Sold out
+            </Badge>
+          )}
+          {product.images.length > 1 && (
+            <Badge className="bg-gold/90 text-white shadow hover:bg-gold">
+              +{product.images.length - 1} photos
             </Badge>
           )}
         </div>

@@ -3,10 +3,49 @@
  * GET    /api/products/[id]  -> fetch one
  * PUT    /api/products/[id]  -> update (ADMIN only)
  * DELETE /api/products/[id]  -> delete (ADMIN only)
+ *
+ * `images` is stored as a JSON string[] and (de)serialized here.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+
+function parseImages(raw: string | null | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed.filter((u) => typeof u === "string");
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+function serialize(p: {
+  id: string;
+  title: string;
+  description: string;
+  currentPrice: number;
+  previousPrice: number | null;
+  images: string;
+  category: string;
+  inStock: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}) {
+  return {
+    id: p.id,
+    title: p.title,
+    description: p.description,
+    currentPrice: p.currentPrice,
+    previousPrice: p.previousPrice,
+    images: parseImages(p.images),
+    category: p.category,
+    inStock: p.inStock,
+    createdAt: p.createdAt,
+    updatedAt: p.updatedAt,
+  };
+}
 
 export async function GET(
   _req: NextRequest,
@@ -18,7 +57,7 @@ export async function GET(
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
-    return NextResponse.json({ product });
+    return NextResponse.json({ product: serialize(product) });
   } catch {
     return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
   }
@@ -36,11 +75,20 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { title, description, currentPrice, previousPrice, imageUrl, category, inStock } = body;
+    const { title, description, currentPrice, previousPrice, images, category, inStock } = body;
 
     const existing = await db.product.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    // Only update images when explicitly provided (array form)
+    let imagesUpdate: string | undefined = undefined;
+    if (images !== undefined) {
+      const cleaned = Array.isArray(images)
+        ? images.filter((u: unknown) => typeof u === "string" && String(u).trim() !== "")
+        : [];
+      imagesUpdate = JSON.stringify(cleaned);
     }
 
     const product = await db.product.update({
@@ -55,13 +103,16 @@ export async function PUT(
             : previousPrice === null
             ? null
             : Number(previousPrice),
-        imageUrl: imageUrl !== undefined ? String(imageUrl) : undefined,
-        category: category !== undefined ? String(category) : undefined,
+        images: imagesUpdate,
+        category:
+          category !== undefined
+            ? String(category).trim() || "All"
+            : undefined,
         inStock: inStock !== undefined ? Boolean(inStock) : undefined,
       },
     });
 
-    return NextResponse.json({ product });
+    return NextResponse.json({ product: serialize(product) });
   } catch {
     return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
   }

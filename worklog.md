@@ -99,3 +99,46 @@ Total: 10/10 images, ~1.48 MB on disk. No other project files were modified.
 - Single `/` route with client-side view switching (store | login | admin).
 - Dev server running clean on port 3000; lint passes with 0 errors/warnings.
 - Verified end-to-end via agent-browser (rendering, all golden-path interactions, responsiveness, sticky footer).
+
+---
+**Task ID:** 13
+**Agent:** orchestrator (enhancement: open category + multiple images)
+**Task:** Make the admin category field an open text input (admin fills any category), and add support for multiple image uploads per product.
+
+**Work Log:**
+1. Read worklog.md and reviewed all affected files (schema, seed, API routes, store, ProductCard, CartDrawer, StoreFront, Navbar, QuickViewDialog, AdminDashboard).
+2. Prisma schema: replaced `imageUrl String` with `images String @default("[]")` (JSON-encoded array, since SQLite can't store a scalar list). Documented both the images + open-category design in schema comments.
+3. Seed script: rewrote all 9 products to use `images: string[]` arrays; gave several products a second image to showcase the gallery. Stores as `JSON.stringify(images)`.
+4. Ran `prisma db push --accept-data-loss` (column rename) + regenerated Prisma Client + re-seeded (9 products, admin user).
+5. API routes (`/api/products` + `/api/products/[id]`): added `parseImages`/`serialize`/`coerceImages` helpers — write stores `JSON.stringify(images)`, read returns `images: string[]`. POST validates "at least one image". PUT only updates images when explicitly provided. Category is stored as free text (trimmed).
+6. Zustand store: changed `Product.imageUrl: string` → `Product.images: string[]`. Added shared `products: Product[]` + `setProducts` (not persisted) so Navbar + StoreFront share one catalogue fetch. Removed the broken `selectCategories` selector (it returned a fresh array each call → Zustand snapshot infinite loop) and replaced with `useMemo` derivations in the components.
+7. ProductCard: uses `images[0]`; added "+N photos" badge when multiple images.
+8. CartDrawer: uses `images[0]`.
+9. QuickViewDialog: rewrote as a multi-image gallery — main image + thumbnail strip, click thumbnail to swap, "1 / N" counter, cover badge. Keyed by product id for clean state reset.
+10. StoreFront: fetches products into the shared store; category chips derived dynamically via `useMemo` (any admin-typed category appears automatically). Case-insensitive category matching.
+11. Navbar: desktop nav + mobile sheet now derive categories dynamically from the shared catalogue (with "Home" as the label for "All").
+12. AdminDashboard: 
+    - Category changed from a fixed `Select` dropdown to an OPEN `Input` with a `<datalist>` of existing-category suggestions (admin can type anything: e.g. "Bridal", "Festive").
+    - Multiple image uploads: a dashed dropzone `<input type="file" multiple>` uploads each file to `/api/upload` and appends to the product's image list. Thumbnail grid shows each image with a "Cover" badge on the first, per-image remove (X), and reorder (‹ ›) controls. Plus a manual-URL adder.
+    - Product table shows an image-count badge on the thumbnail.
+13. Fixed a real bug: the manual-URL adder was a nested `<form>` inside the product `<form>` (invalid HTML — inner form ignored, "+" submitted the outer form). Replaced with a `<div>` + controlled input + `type="button"` (+ Enter-key handler with preventDefault).
+14. Fixed the stale-Prisma-Client issue (running dev server had cached the old client querying `imageUrl`) by regenerating the client and restarting the dev server; also cleared `.next` + browser HTTP cache to drop a stale chunk that reported a phantom `CATEGORIES is not defined` error.
+15. Lint: 0 errors, 0 warnings.
+
+**Agent-browser verification (all passed):**
+- Storefront renders; navbar + filter chips derive categories dynamically from the catalogue.
+- Quick View gallery: thumbnail strip works (clicking thumb 2 swaps main image necklace-pearl → necklace-vine; counter shows "2 / 2").
+- Admin login (Dinakar@gmail.com / MadhAmma@256) → dashboard with open category field + multiple-image upload dropzone.
+- Added a test product "Bridal Maang Tikka" with a CUSTOM category "Bridal" and TWO images (via manual URL adder) → product table shows it with a "2" image badge.
+- After adding, the custom "Bridal" category appeared automatically in BOTH the navbar and the storefront filter chips; filtering by "Bridal" showed exactly that one product.
+- Edit flow loads the product's images + custom category into the form; per-image remove works (count drops; "No images yet" empty state shows at 0).
+- Delete (with confirmation) removes the test product; categories revert to the original 4.
+- 0 browser console/runtime errors; dev log shows all API calls returning 200 with the new `images` column.
+
+**Stage Summary:**
+- Two enhancements shipped & verified:
+  1. **Open category field** — admin types any category; storefront + navbar derive their chips/links dynamically (no hardcoded list).
+  2. **Multiple image uploads** — admin can upload many images at once (or add URLs); Quick View shows a gallery with thumbnails; first image is the cover; images can be removed/reordered in the edit form.
+- Data model migrated from single `imageUrl` to `images: string[]` (JSON in SQLite).
+- Single shared catalogue fetch in the Zustand store powers both Navbar and StoreFront category derivation.
+- Lint clean (0/0); dev server healthy; all golden-path flows browser-verified.

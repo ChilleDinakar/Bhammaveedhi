@@ -3,8 +3,11 @@
 /**
  * BHAAMA VEEDHI — Quick View Dialog
  * Modal showing full product details + quantity selector + add to cart.
- * Uses a key-based inner component so quantity resets cleanly per product
- * (no setState-in-effect needed).
+ *
+ * Now supports MULTIPLE images per product: a main image with a thumbnail
+ * strip beneath it. Clicking a thumbnail swaps the main image. The inner
+ * component is keyed by product id so the selected image + quantity reset
+ * cleanly when switching products (no setState-in-effect needed).
  */
 import { useState } from "react";
 import { ShoppingBag, Minus, Plus, Check } from "lucide-react";
@@ -19,6 +22,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export function QuickViewDialog() {
   const product = useStore((s) => s.quickViewProduct);
@@ -38,7 +42,9 @@ function QuickViewContent({ product }: { product: Product }) {
   const addToCart = useStore((s) => s.addToCart);
   const { toast } = useToast();
   const [qty, setQty] = useState(1);
+  const [activeImg, setActiveImg] = useState(0);
 
+  const images = product.images.length > 0 ? product.images : ["/products/necklace-vine.png"];
   const discount = product.previousPrice
     ? Math.round(
         ((product.previousPrice - product.currentPrice) / product.previousPrice) *
@@ -57,18 +63,47 @@ function QuickViewContent({ product }: { product: Product }) {
 
   return (
     <div className="grid gap-0 md:grid-cols-2">
-      {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-cream-deep md:aspect-auto">
-        { }
-        <img
-          src={product.imageUrl}
-          alt={product.title}
-          className="h-full w-full object-cover"
-        />
-        {discount > 0 && (
-          <Badge className="absolute left-4 top-4 bg-maroon text-cream">
-            -{discount}% Off
-          </Badge>
+      {/* Image gallery */}
+      <div className="relative flex flex-col bg-cream-deep">
+        <div className="relative aspect-square overflow-hidden">
+          { }
+          <img
+            src={images[activeImg]}
+            alt={`${product.title} — view ${activeImg + 1}`}
+            className="h-full w-full object-cover"
+          />
+          {discount > 0 && (
+            <Badge className="absolute left-4 top-4 bg-maroon text-cream">
+              -{discount}% Off
+            </Badge>
+          )}
+          {images.length > 1 && (
+            <span className="absolute bottom-4 right-4 rounded-full bg-maroon/80 px-2.5 py-1 text-xs font-medium text-cream backdrop-blur-sm">
+              {activeImg + 1} / {images.length}
+            </span>
+          )}
+        </div>
+
+        {/* Thumbnail strip (only when multiple images) */}
+        {images.length > 1 && (
+          <div className="flex gap-2 p-3">
+            {images.map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveImg(i)}
+                aria-label={`View image ${i + 1}`}
+                className={cn(
+                  "relative size-14 shrink-0 overflow-hidden rounded-md border-2 transition-all",
+                  i === activeImg
+                    ? "border-gold ring-2 ring-gold/30"
+                    : "border-transparent opacity-70 hover:opacity-100"
+                )}
+              >
+                { }
+                <img src={src} alt="" className="h-full w-full object-cover" />
+              </button>
+            ))}
+          </div>
         )}
       </div>
 

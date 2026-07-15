@@ -6,7 +6,7 @@
  * Cream background, maroon text, antique-gold hover accents.
  * Cart icon carries a dynamic item-count badge.
  */
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import {
   ShoppingBag,
@@ -37,14 +37,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
-  { label: "Home", category: "All" },
-  { label: "Necklaces", category: "Necklaces" },
-  { label: "Earrings", category: "Earrings" },
-  { label: "Bangles", category: "Bangles" },
-  { label: "Rings", category: "Rings" },
-];
-
 export function Navbar() {
   const cartCount = useStore(selectCartCount);
   const openCart = useStore((s) => s.openCart);
@@ -53,6 +45,18 @@ export function Navbar() {
   const activeCategory = useStore((s) => s.activeCategory);
   const user = useStore((s) => s.user);
   const logout = useStore((s) => s.logout);
+  const products = useStore((s) => s.products);
+  // Categories are derived dynamically from the shared product catalogue,
+  // so any category the admin creates appears here automatically. Memoized
+  // over the stable `products` reference to keep the array identity stable
+  // (returning a fresh array each render would trigger an infinite loop).
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    products.forEach((p) => {
+      if (p.category && p.category.trim()) set.add(p.category.trim());
+    });
+    return ["All", ...Array.from(set)];
+  }, [products]);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleNav = (category: string) => {
@@ -83,21 +87,23 @@ export function Navbar() {
           </span>
         </button>
 
-        {/* Center nav (desktop) */}
-        <nav className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+        {/* Center nav (desktop) — categories derived from the catalogue */}
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+          {categories.map((cat) => (
             <button
-              key={link.label}
-              onClick={() => handleNav(link.category)}
-              data-active={activeCategory === link.category}
+              key={cat}
+              onClick={() => handleNav(cat)}
+              data-active={
+                activeCategory.trim().toLowerCase() === cat.trim().toLowerCase()
+              }
               className={cn(
-                "nav-underline text-sm font-medium tracking-wide transition-colors",
-                activeCategory === link.category
+                "nav-underline text-sm font-medium tracking-wide transition-colors whitespace-nowrap",
+                activeCategory.trim().toLowerCase() === cat.trim().toLowerCase()
                   ? "text-maroon"
                   : "text-foreground/70 hover:text-maroon"
               )}
             >
-              {link.label}
+              {cat === "All" ? "Home" : cat}
             </button>
           ))}
         </nav>
@@ -193,18 +199,18 @@ export function Navbar() {
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-6 flex flex-col gap-1">
-                {NAV_LINKS.map((link) => (
+                {categories.map((cat) => (
                   <button
-                    key={link.label}
-                    onClick={() => handleNav(link.category)}
+                    key={cat}
+                    onClick={() => handleNav(cat)}
                     className={cn(
                       "rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors",
-                      activeCategory === link.category
+                      activeCategory.trim().toLowerCase() === cat.trim().toLowerCase()
                         ? "bg-maroon text-cream"
                         : "text-foreground/80 hover:bg-accent hover:text-maroon"
                     )}
                   >
-                    {link.label}
+                    {cat === "All" ? "Home" : cat}
                   </button>
                 ))}
                 <div className="mt-4 border-t border-gold/20 pt-4">
