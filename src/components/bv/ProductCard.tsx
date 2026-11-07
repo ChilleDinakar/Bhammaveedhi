@@ -50,7 +50,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       >
         { }
         <img
-          src={product.images[0]}
+          src={product.images && product.images.length > 0 ? product.images[0] : "/products/necklace-vine.png"}
           alt={product.title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"

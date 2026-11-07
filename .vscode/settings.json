@@ -1,0 +1,10 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "bun.lock, bun.lockb, package-lock.json, tsconfig.json, tsconfig.*.json, tsconfig.tsbuildinfo, next.config.*, tailwind.config.*, postcss.config.*, eslint.config.*, components.json, Caddyfile, dev.log, dev.*.log, server.log, next-env.d.ts",
+    ".env": ".env.*, .env.local, .env.development, .env.production",
+    "README.md": "README.*, CHANGELOG.*, LICENSE*"
+  }
+}
+

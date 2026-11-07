@@ -88,11 +88,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { title, description, currentPrice, previousPrice, images, category, inStock } = body;
 
-    const cleanImages = coerceImages(images) ?? [];
+    const parsedImages = coerceImages(images) ?? [];
+    const cleanImages = parsedImages.length > 0 ? parsedImages : ["/products/necklace-vine.png"];
 
-    if (!title || !description || !currentPrice || cleanImages.length === 0) {
+    if (!title || !description || currentPrice === undefined || currentPrice === null || isNaN(Number(currentPrice))) {
       return NextResponse.json(
-        { error: "Missing required fields: title, description, currentPrice and at least one image" },
+        { error: "Missing required fields: title, description, and valid currentPrice" },
         { status: 400 }
       );
     }

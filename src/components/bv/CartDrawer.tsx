@@ -104,7 +104,7 @@ export function CartDrawer() {
                     <div className="size-20 shrink-0 overflow-hidden rounded-lg bg-cream-deep">
                       { }
                       <img
-                        src={item.product.images[0]}
+                        src={item.product.images && item.product.images.length > 0 ? item.product.images[0] : "/products/necklace-vine.png"}
                         alt={item.product.title}
                         className="h-full w-full object-cover"
                       />

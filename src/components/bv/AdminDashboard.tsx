@@ -139,15 +139,20 @@ export function AdminDashboard() {
     if (list.length === 0) return;
     setUploading(true);
     const uploaded: string[] = [];
+    const errors: string[] = [];
     for (const file of list) {
       try {
         const fd = new FormData();
         fd.append("file", file);
         const res = await fetch("/api/upload", { method: "POST", body: fd });
         const data = await res.json();
-        if (res.ok && data.url) uploaded.push(data.url as string);
+        if (res.ok && data.url) {
+          uploaded.push(data.url as string);
+        } else {
+          errors.push(data.error || `${file.name} could not be uploaded.`);
+        }
       } catch {
-        /* skip this file */
+        errors.push(`${file.name}: Connection error.`);
       }
     }
     setForm((f) => ({ ...f, images: [...f.images, ...uploaded] }));
@@ -160,7 +165,7 @@ export function AdminDashboard() {
     if (uploaded.length < list.length) {
       toast({
         title: "Some uploads failed",
-        description: `${list.length - uploaded.length} file(s) could not be uploaded.`,
+        description: errors[0] || `${list.length - uploaded.length} file(s) could not be uploaded.`,
         variant: "destructive",
       });
     }
@@ -191,22 +196,43 @@ export function AdminDashboard() {
   /* ---- Submit (add or edit) ---- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title || !form.description || !form.currentPrice || form.images.length === 0) {
+
+    // Check specific required fields
+    const missing: string[] = [];
+    if (!form.title.trim()) missing.push("Title");
+    if (!form.description.trim()) missing.push("Description");
+    if (!form.currentPrice.trim() || isNaN(Number(form.currentPrice)) || Number(form.currentPrice) <= 0) {
+      missing.push("Valid Price");
+    }
+
+    if (missing.length > 0) {
       toast({
-        title: "Missing fields",
-        description: "Title, description, price and at least one image are required.",
+        title: "Missing required fields",
+        description: `Please fill in: ${missing.join(", ")}.`,
         variant: "destructive",
       });
       return;
     }
+
+    // Auto-commit manual image URL if admin typed one without clicking '+'
+    let finalImages = [...form.images];
+    if (manualUrl.trim() && !finalImages.includes(manualUrl.trim())) {
+      finalImages.push(manualUrl.trim());
+    }
+
+    // Graceful fallback: if no image was uploaded or entered, use default placeholder
+    if (finalImages.length === 0) {
+      finalImages = ["/products/necklace-vine.png"];
+    }
+
     setSaving(true);
     try {
       const payload = {
-        title: form.title,
-        description: form.description,
+        title: form.title.trim(),
+        description: form.description.trim(),
         currentPrice: Number(form.currentPrice),
         previousPrice: form.previousPrice ? Number(form.previousPrice) : null,
-        images: form.images,
+        images: finalImages,
         category: form.category.trim() || "All",
         inStock: form.inStock,
       };
@@ -237,6 +263,7 @@ export function AdminDashboard() {
         description: form.title,
       });
       setForm(EMPTY_FORM);
+      setManualUrl("");
       setEditing(false);
       fetchProducts();
     } catch {
@@ -269,6 +296,7 @@ export function AdminDashboard() {
   const cancelEdit = () => {
     setEditing(false);
     setForm(EMPTY_FORM);
+    setManualUrl("");
   };
 
   /* ---- Delete ---- */
@@ -570,7 +598,7 @@ export function AdminDashboard() {
                   ) : (
                     <div className="flex items-center gap-2 rounded-lg border border-gold/20 bg-cream-deep/20 px-3 py-3 text-xs text-muted-foreground">
                       <ImageIcon className="size-4 text-gold-dark" />
-                      No images yet — upload at least one.
+                      No images added yet (a default jewelry placeholder will be assigned if left empty).
                     </div>
                   )}
 

@@ -85,9 +85,12 @@ export async function PUT(
     // Only update images when explicitly provided (array form)
     let imagesUpdate: string | undefined = undefined;
     if (images !== undefined) {
-      const cleaned = Array.isArray(images)
+      let cleaned = Array.isArray(images)
         ? images.filter((u: unknown) => typeof u === "string" && String(u).trim() !== "")
         : [];
+      if (cleaned.length === 0) {
+        cleaned = ["/products/necklace-vine.png"];
+      }
       imagesUpdate = JSON.stringify(cleaned);
     }
 
