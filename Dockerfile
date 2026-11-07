@@ -1,12 +1,12 @@
-# Base Bun image
-FROM oven/bun:1.1-alpine AS base
+# Base Bun image (Debian slim provides full glibc support for Prisma)
+FROM oven/bun:1 AS base
 WORKDIR /app
 
 # Dependencies stage
 FROM base AS deps
-COPY package.json bun.lock ./
+COPY package.json bun.lock* ./
 COPY prisma ./prisma/
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Builder stage
 FROM base AS builder
