@@ -38,3 +38,4 @@ EXPOSE 3000
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["bun", "server.js"]
+

@@ -25,3 +25,4 @@ if [ -d "/data" ]; then
 fi
 
 exec "$@"
+
