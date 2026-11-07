@@ -1,0 +1,137 @@
+▲ Next.js 16.1.3 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.174:3000
+- Environments: .env
+
+✓ Starting...
+✓ Ready in 2.1s
+ HEAD / 200 in 1359ms (compile: 1139ms, render: 220ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 1271ms (compile: 401ms, render: 869ms)
+ GET / 200 in 188ms (compile: 46ms, render: 142ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 123ms (compile: 3ms, render: 121ms)
+ GET /api/auth/session 200 in 1443ms (compile: 1425ms, render: 18ms)
+ GET /apple-touch-icon-precomposed.png 404 in 1598ms (compile: 1561ms, render: 36ms)
+ GET /apple-touch-icon.png 404 in 27ms (compile: 1832µs, render: 25ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`email`, `main`.`User`.`password`, `main`.`User`.`role`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE (`main`.`User`.`email` = ? AND 1=1) LIMIT ? OFFSET ?
+ POST /api/auth/login 404 in 557ms (compile: 385ms, render: 172ms)
+ POST /api/auth/login 200 in 72ms (compile: 23ms, render: 49ms)
+ GET /api/auth/session 200 in 268ms (compile: 252ms, render: 15ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 253ms (compile: 202ms, render: 50ms)
+Error: Failed to find Server Action. This request might be from an older or newer deployment.
+Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+    at processTicksAndRejections (null)
+ POST /api/upload 404 in 634ms (compile: 484ms, render: 150ms)
+ GET / 200 in 101ms (compile: 30ms, render: 70ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 11ms (compile: 5ms, render: 6ms)
+ GET /api/auth/session 200 in 592ms (compile: 8ms, render: 584ms)
+ GET /api/auth/session 200 in 8ms (compile: 2ms, render: 6ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 4ms (compile: 1518µs, render: 2ms)
+Error: Failed to find Server Action. This request might be from an older or newer deployment.
+Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+    at processTicksAndRejections (null)
+ POST /api/upload 404 in 157ms (compile: 5ms, render: 152ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE (`main`.`Product`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query DELETE FROM `main`.`Product` WHERE (`main`.`Product`.`id` = ? AND 1=1) RETURNING `id` AS `id`, `title` AS `title`, `description` AS `description`, `currentPrice` AS `currentPrice`, `previousPrice` AS `previousPrice`, `images` AS `images`, `category` AS `category`, `inStock` AS `inStock`, `createdAt` AS `createdAt`, `updatedAt` AS `updatedAt`
+ DELETE /api/products/cmrn9mygf0008itvn04v0fsry 200 in 750ms (compile: 715ms, render: 35ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 19ms (compile: 15ms, render: 4ms)
+Error: Failed to find Server Action. This request might be from an older or newer deployment.
+Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+    at processTicksAndRejections (null)
+ POST /api/upload 404 in 155ms (compile: 20ms, render: 134ms)
+ GET /api/upload 404 in 43ms (compile: 1954µs, render: 41ms)
+ POST /api/upload 401 in 272ms (compile: 264ms, render: 8ms)
+ POST /api/auth/login 200 in 180ms (compile: 168ms, render: 12ms)
+ POST /api/upload 200 in 10ms (compile: 2ms, render: 8ms)
+ POST /api/auth/login 200 in 8ms (compile: 3ms, render: 5ms)
+ POST /api/upload 200 in 5ms (compile: 1387µs, render: 3ms)
+ GET / 200 in 228ms (compile: 36ms, render: 193ms)
+ GET / 200 in 573ms (compile: 220ms, render: 353ms)
+ GET / 200 in 532ms (compile: 35ms, render: 497ms)
+ GET / 200 in 675ms (compile: 35ms, render: 640ms)
+ GET / 200 in 832ms (compile: 35ms, render: 797ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 2.2s (compile: 2.1s, render: 9ms)
+ GET /api/auth/session 200 in 2.3s (compile: 2.1s, render: 196ms)
+ GET / 200 in 1581ms (compile: 410ms, render: 1171ms)
+ GET /api/auth/session 200 in 30ms (compile: 17ms, render: 14ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 187ms (compile: 2ms, render: 185ms)
+ GET / 200 in 366ms (compile: 3ms, render: 363ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 4ms (compile: 1304µs, render: 3ms)
+ GET /api/auth/session 200 in 584ms (compile: 2ms, render: 581ms)
+ GET /api/auth/session 200 in 10ms (compile: 4ms, render: 6ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 5ms (compile: 1264µs, render: 4ms)
+ POST /api/upload 200 in 34ms (compile: 25ms, render: 9ms)
+ POST /api/auth/login 200 in 255ms (compile: 238ms, render: 17ms)
+prisma:query SELECT 1
+prisma:query INSERT INTO `main`.`Product` (`id`, `title`, `description`, `currentPrice`, `previousPrice`, `images`, `category`, `inStock`, `createdAt`, `updatedAt`) VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING `id` AS `id`, `title` AS `title`, `description` AS `description`, `currentPrice` AS `currentPrice`, `previousPrice` AS `previousPrice`, `images` AS `images`, `category` AS `category`, `inStock` AS `inStock`, `createdAt` AS `createdAt`, `updatedAt` AS `updatedAt`
+ POST /api/products 201 in 165ms (compile: 152ms, render: 14ms)
+ HEAD / 200 in 284ms (compile: 31ms, render: 254ms)
+ GET / 200 in 340ms (compile: 236ms, render: 104ms)
+ GET / 200 in 274ms (compile: 22ms, render: 252ms)
+ GET / 200 in 456ms (compile: 23ms, render: 433ms)
+ GET / 200 in 630ms (compile: 22ms, render: 608ms)
+ GET / 200 in 804ms (compile: 22ms, render: 781ms)
+ GET / 200 in 1068ms (compile: 22ms, render: 1046ms)
+ GET / 200 in 690ms (compile: 248ms, render: 442ms)
+ GET / 200 in 880ms (compile: 247ms, render: 633ms)
+ GET / 200 in 1061ms (compile: 248ms, render: 813ms)
+ GET / 200 in 1235ms (compile: 247ms, render: 988ms)
+ GET /api/auth/session 200 in 1936ms (compile: 1905ms, render: 31ms)
+ GET /api/auth/session 200 in 1379ms (compile: 1138ms, render: 241ms)
+ GET /api/auth/session 200 in 770ms (compile: 323ms, render: 447ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 2.6s (compile: 1905ms, render: 658ms)
+ GET /api/products 200 in 1177ms (compile: 322ms, render: 856ms)
+ GET /api/products 200 in 2.2s (compile: 1137ms, render: 1046ms)
+ POST /api/upload 200 in 258ms (compile: 236ms, render: 22ms)
+ GET /cool 404 in 739ms (compile: 633ms, render: 106ms)
+prisma:query SELECT 1
+prisma:query INSERT INTO `main`.`Product` (`id`, `title`, `description`, `currentPrice`, `previousPrice`, `images`, `category`, `inStock`, `createdAt`, `updatedAt`) VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING `id` AS `id`, `title` AS `title`, `description` AS `description`, `currentPrice` AS `currentPrice`, `previousPrice` AS `previousPrice`, `images` AS `images`, `category` AS `category`, `inStock` AS `inStock`, `createdAt` AS `createdAt`, `updatedAt` AS `updatedAt`
+ POST /api/products 201 in 245ms (compile: 225ms, render: 20ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 5ms (compile: 1677µs, render: 3ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 14ms (compile: 6ms, render: 8ms)
+ GET / 200 in 63ms (compile: 25ms, render: 38ms)
+ GET / 200 in 611ms (compile: 190ms, render: 421ms)
+ HEAD / 200 in 228ms (compile: 2ms, render: 225ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 184ms (compile: 176ms, render: 9ms)
+ GET / 200 in 433ms (compile: 38ms, render: 394ms)
+ GET / 200 in 110ms (compile: 6ms, render: 104ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 388ms (compile: 364ms, render: 24ms)
+ GET /api/auth/session 200 in 595ms (compile: 363ms, render: 232ms)
+ POST /api/auth/logout 200 in 247ms (compile: 231ms, render: 16ms)
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 553ms (compile: 55ms, render: 498ms)
+ GET / 200 in 13ms (compile: 2ms, render: 11ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 222ms (compile: 208ms, render: 14ms)
+ GET /api/auth/session 200 in 441ms (compile: 214ms, render: 227ms)
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`currentPrice`, `main`.`Product`.`previousPrice`, `main`.`Product`.`images`, `main`.`Product`.`category`, `main`.`Product`.`inStock`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE 1=1 ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/products 200 in 8ms (compile: 1713µs, render: 6ms)
+ GET /api/auth/session 200 in 272ms (compile: 3ms, render: 269ms)
