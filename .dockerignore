@@ -1,0 +1,8 @@
+node_modules
+.next
+.git
+.vscode
+docs
+dev.log
+server.log
+*.tsbuildinfo
