@@ -85,17 +85,17 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full shadow-sm">
       {/* 1. Top Announcement Bar */}
-      <div className="bg-[#6B2C3E] px-4 py-2 text-center text-xs tracking-[0.2em] uppercase text-white font-medium flex items-center justify-center gap-2">
-        <Sparkles className="size-3 text-[#D6B98C] animate-pulse" />
-        <span>FREE SHIPPING ON ORDERS ABOVE ₹499 • DISPATCH IN 3–4 DAYS</span>
-        <Sparkles className="size-3 text-[#D6B98C] animate-pulse" />
+      <div className="bg-[#6B2C3E] px-4 py-2 text-center text-xs tracking-[0.2em] text-[#F8F3EE] font-medium flex items-center justify-center gap-2">
+        <span className="text-[#D6B98C] text-xs">✦</span>
+        <span>Free Shipping on Orders Above ₹499</span>
+        <span className="text-[#D6B98C] text-xs">✦</span>
       </div>
 
       {/* 2. Main Navigation Bar */}
-      <div className="border-b border-[#E8DAD5] bg-[#F8F3EE]/95 backdrop-blur-md">
+      <div className="border-b border-[#E8DAD5]/60 bg-[#FAF6F0]/95 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Left: Navigation links (desktop) or Hamburger (mobile) */}
-          <div className="flex items-center gap-1 sm:gap-2 flex-1 justify-start">
+          <div className="flex items-center gap-6 flex-1 justify-start">
             {/* Mobile menu sheet */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -108,40 +108,53 @@ export function Navbar() {
                   <Menu className="size-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-80 bg-[#F8F3EE] border-[#E8DAD5] p-6">
+              <SheetContent side="left" className="w-80 bg-[#FAF6F0] border-[#E8DAD5] p-6">
                 <SheetHeader>
-                  <SheetTitle className="font-serif text-2xl text-[#6B2C3E] text-left">
-                    Bhaama Veedhi
-                  </SheetTitle>
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#8B6C61] text-left">
-                    {BRAND.subtitle}
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src="/brand/header-logo.png"
+                      alt="Bhaama Veedhi"
+                      className="h-14 w-auto object-contain"
+                    />
+                    <div>
+                      <SheetTitle className="font-serif text-xl text-[#6B2C3E] text-left">
+                        Bhaama Veedhi
+                      </SheetTitle>
+                      <p className="text-[10px] tracking-[0.2em] uppercase text-[#8B6C61] text-left">
+                        {BRAND.subtitle}
+                      </p>
+                    </div>
+                  </div>
                 </SheetHeader>
 
                 <div className="mt-6 flex flex-col gap-1">
                   <button
+                    onClick={() => {
+                      setView("store");
+                      setMobileOpen(false);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#30272A] hover:bg-[#E8DAD5]/60 hover:text-[#6B2C3E]"
+                  >
+                    Home
+                  </button>
+                  <button
                     onClick={() => scrollToSection("collection")}
                     className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#30272A] hover:bg-[#E8DAD5]/60 hover:text-[#6B2C3E]"
                   >
-                    Shop All Collection
-                  </button>
-                  <button
-                    onClick={() => scrollToSection("categories")}
-                    className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#30272A] hover:bg-[#E8DAD5]/60 hover:text-[#6B2C3E]"
-                  >
-                    Shop by Category
+                    Shop
                   </button>
                   <button
                     onClick={() => scrollToSection("story")}
                     className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#30272A] hover:bg-[#E8DAD5]/60 hover:text-[#6B2C3E]"
                   >
-                    The Story of Bhaama Veedhi
+                    About Us
                   </button>
                   <button
-                    onClick={() => scrollToSection("reviews")}
+                    onClick={() => scrollToSection("footer")}
                     className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#30272A] hover:bg-[#E8DAD5]/60 hover:text-[#6B2C3E]"
                   >
-                    Customer Reviews
+                    Contact
                   </button>
 
                   <div className="mt-4 border-t border-[#E8DAD5] pt-4">
@@ -163,202 +176,186 @@ export function Navbar() {
                       </button>
                     ))}
                   </div>
-
-                  <div className="mt-6 border-t border-[#E8DAD5] pt-4 space-y-2">
-                    <a
-                      href={BRAND.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block rounded-lg px-4 py-2 text-xs font-medium text-[#8B6C61] hover:text-[#6B2C3E]"
-                    >
-                      Follow on Instagram ({BRAND.instagramHandle})
-                    </a>
-                    <a
-                      href={`https://wa.me/${BRAND.whatsapp}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block rounded-lg px-4 py-2 text-xs font-medium text-[#8B6C61] hover:text-[#6B2C3E]"
-                    >
-                      Chat with us on WhatsApp
-                    </a>
-                  </div>
                 </div>
               </SheetContent>
             </Sheet>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+            <nav className="hidden md:flex items-center gap-7">
               <button
-                onClick={() => scrollToSection("collection")}
-                className="text-sm font-medium tracking-wide text-[#30272A]/80 hover:text-[#6B2C3E] transition-colors"
+                onClick={() => {
+                  setView("store");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className={cn(
+                  "relative py-1 text-sm font-medium tracking-wide transition-colors text-[#30272A] hover:text-[#6B2C3E]",
+                  view === "store" && !searchQuery && "border-b-2 border-[#6B2C3E] text-[#6B2C3E] pb-0.5"
+                )}
               >
-                Collection
+                Home
               </button>
               <button
-                onClick={() => scrollToSection("categories")}
-                className="text-sm font-medium tracking-wide text-[#30272A]/80 hover:text-[#6B2C3E] transition-colors"
+                onClick={() => scrollToSection("collection")}
+                className="text-sm font-medium tracking-wide transition-colors text-[#30272A] hover:text-[#6B2C3E]"
               >
-                Categories
+                Shop
               </button>
               <button
                 onClick={() => scrollToSection("story")}
-                className="text-sm font-medium tracking-wide text-[#30272A]/80 hover:text-[#6B2C3E] transition-colors"
+                className="text-sm font-medium tracking-wide transition-colors text-[#30272A] hover:text-[#6B2C3E]"
               >
-                Our Story
+                About Us
               </button>
               <button
-                onClick={() => scrollToSection("reviews")}
-                className="text-sm font-medium tracking-wide text-[#30272A]/80 hover:text-[#6B2C3E] transition-colors"
+                onClick={() => scrollToSection("footer")}
+                className="text-sm font-medium tracking-wide transition-colors text-[#30272A] hover:text-[#6B2C3E]"
               >
-                Reviews
+                Contact
               </button>
             </nav>
           </div>
 
-          {/* Center: Brand Logo & Subtitle */}
-          <div className="flex flex-col items-center justify-center text-center px-2 cursor-pointer group"
-            onClick={() => {
-              if (view !== "store") setView("store");
-              setCategory("All");
-              setSearchQuery("");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <span className="font-serif text-2xl sm:text-3xl font-medium tracking-wide text-[#6B2C3E] transition-colors group-hover:text-[#85374E]">
-                Bhaama Veedhi
-              </span>
-            </div>
-            <span className="text-[8px] sm:text-[9.5px] tracking-[0.28em] uppercase text-[#8B6C61] font-medium mt-0.5">
-              {BRAND.subtitle}
-            </span>
+          {/* Center: Brand Logo */}
+          <div className="flex flex-col items-center justify-center">
+            <button
+              onClick={() => {
+                setView("store");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="group flex flex-col items-center transition-transform hover:scale-102"
+              aria-label="Bhaama Veedhi Home"
+            >
+              <img
+                src="/brand/header-logo.png"
+                alt="Bhaama Veedhi — Styled for Every Bhaama"
+                className="h-14 sm:h-16 w-auto object-contain drop-shadow-xs"
+              />
+            </button>
           </div>
 
-          {/* Right: Search, Account, Cart */}
-          <div className="flex items-center gap-1 sm:gap-2 flex-1 justify-end">
-            {/* Search Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSearchOpen(!searchOpen)}
-              className={cn(
-                "rounded-full transition-colors",
-                searchOpen || searchQuery
-                  ? "bg-[#6B2C3E] text-white hover:bg-[#85374E]"
-                  : "text-[#6B2C3E] hover:bg-[#E8DAD5]/50 hover:text-[#6B2C3E]"
-              )}
-              aria-label="Search products"
-            >
-              <Search className="size-4 sm:size-5" />
-            </Button>
-
-            {/* User / Account */}
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+          {/* Right: Search + Divider + Cart + Account */}
+          <div className="flex items-center justify-end gap-2 sm:gap-3 flex-1">
+            {/* Live Search Input Toggle */}
+            <div className="relative">
+              {searchOpen ? (
+                <div className="flex items-center gap-1.5 animate-fade-in bg-white rounded-full border border-[#D6B98C] pl-3 pr-1 py-1 shadow-xs">
+                  <Search className="size-3.5 text-[#8B6C61]" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search jewellery…"
+                    className="w-32 sm:w-48 bg-transparent text-xs text-[#30272A] placeholder:text-[#8B6C61]/70 focus:outline-none"
+                    autoFocus
+                  />
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="rounded-full text-[#6B2C3E] hover:bg-[#E8DAD5]/50"
-                    aria-label="Account menu"
-                  >
-                    <User className="size-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-white border-[#E8DAD5]">
-                  <DropdownMenuLabel className="font-serif">
-                    <span className="block text-[#6B2C3E] font-medium">{user.name}</span>
-                    <span className="block text-xs font-sans font-normal text-muted-foreground">
-                      {user.email}
-                    </span>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[#E8DAD5]" />
-                  {user.role === "ADMIN" && (
-                    <DropdownMenuItem
-                      onClick={() => setView("admin")}
-                      className="cursor-pointer text-[#6B2C3E] focus:text-[#6B2C3E] focus:bg-[#F8F3EE]"
-                    >
-                      <ShieldCheck className="mr-2 size-4 text-[#B5945F]" />
-                      Admin Dashboard
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem
-                    onClick={async () => {
-                      await fetch("/api/auth/logout", { method: "POST" });
-                      logout();
+                    onClick={() => {
+                      setSearchOpen(false);
+                      setSearchQuery("");
                     }}
-                    className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+                    className="size-6 rounded-full text-[#8B6C61] hover:text-[#6B2C3E]"
                   >
-                    <LogOut className="mr-2 size-4" />
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setView("login")}
-                className="rounded-full text-[#6B2C3E] hover:bg-[#E8DAD5]/50"
-                aria-label="Login"
-              >
-                <User className="size-5" />
-              </Button>
-            )}
+                    <X className="size-3.5" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSearchOpen(true)}
+                  className="rounded-full text-[#30272A] hover:bg-[#E8DAD5]/50 hover:text-[#6B2C3E]"
+                  aria-label="Search collection"
+                >
+                  <Search className="size-5" />
+                </Button>
+              )}
+            </div>
 
-            {/* Shopping Bag */}
+            {/* Subtle Divider */}
+            <span className="hidden sm:inline-block h-4 w-px bg-[#D6B98C]/60" />
+
+            {/* Shopping Bag Button */}
             <Button
               variant="ghost"
               size="icon"
               onClick={openCart}
-              className="relative rounded-full text-[#6B2C3E] hover:bg-[#E8DAD5]/50"
-              aria-label={`Open cart, ${cartCount} items`}
+              className="relative rounded-full text-[#30272A] hover:bg-[#E8DAD5]/50 hover:text-[#6B2C3E]"
+              aria-label={`Open shopping cart with ${cartCount} items`}
             >
               <ShoppingBag className="size-5" />
-              {cartCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex min-w-5 h-5 items-center justify-center rounded-full bg-[#6B2C3E] px-1 text-[11px] font-bold text-white shadow ring-2 ring-[#F8F3EE] animate-scale-in">
-                  {cartCount}
-                </span>
-              )}
+              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-[#6B2C3E] text-[10px] font-semibold text-white">
+                {cartCount}
+              </span>
             </Button>
+
+            {/* Account / Admin Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full text-[#30272A] hover:bg-[#E8DAD5]/50 hover:text-[#6B2C3E]"
+                  aria-label="Account options"
+                >
+                  <User className="size-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-white border-[#E8DAD5]">
+                {user ? (
+                  <>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none text-[#30272A]">{user.name}</p>
+                        <p className="text-xs leading-none text-[#8B6C61]">{user.email}</p>
+                        {user.role === "ADMIN" && (
+                          <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-[#6B2C3E]">
+                            <ShieldCheck className="size-3" /> Admin Privileges
+                          </span>
+                        )}
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {user.role === "ADMIN" && (
+                      <DropdownMenuItem
+                        onClick={() => setView("admin")}
+                        className="cursor-pointer text-[#6B2C3E] font-medium"
+                      >
+                        <ShieldCheck className="mr-2 size-4 text-[#6B2C3E]" />
+                        Admin Dashboard
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem
+                      onClick={() => setView("store")}
+                      className="cursor-pointer"
+                    >
+                      Storefront
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => logout()}
+                      className="cursor-pointer text-destructive focus:text-destructive"
+                    >
+                      <LogOut className="mr-2 size-4" />
+                      Sign out
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem
+                      onClick={() => setView("login")}
+                      className="cursor-pointer font-medium text-[#6B2C3E]"
+                    >
+                      <User className="mr-2 size-4" />
+                      Sign In / Register
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
-
-        {/* Expandable Search Bar */}
-        {searchOpen && (
-          <div className="border-t border-[#E8DAD5] bg-white px-4 py-3 sm:px-6">
-            <div className="mx-auto flex max-w-3xl items-center gap-3">
-              <Search className="size-4 text-[#8B6C61]" />
-              <Input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  if (view !== "store") setView("store");
-                }}
-                placeholder="Search earrings, necklaces, rings, bangles…"
-                autoFocus
-                className="border-none bg-transparent shadow-none focus-visible:ring-0 text-sm text-[#30272A]"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="text-xs text-[#8B6C61] hover:text-[#6B2C3E]"
-                >
-                  Clear
-                </button>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSearchOpen(false)}
-                className="text-xs text-[#8B6C61] hover:text-[#6B2C3E]"
-              >
-                <X className="size-4" />
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );

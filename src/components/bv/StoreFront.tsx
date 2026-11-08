@@ -2,16 +2,14 @@
 
 /**
  * BHAAMA VEEDHI — Storefront
- * Brand Direction: Minimal Luxury & Everyday Elegance
- * Sections in order (from design specification):
- * 1. Hero Banner
- * 2. Shop by Category (Earrings, Necklaces, Bracelets, Chains/Rings)
- * 3. New Arrivals & Full Collection (with dynamic category pills + real-time search)
- * 4. Best Sellers / Curated Spotlight
- * 5. Trust & Promise Banner (Dusty Blush #E8DAD5)
- * 6. The Story of Bhaama Veedhi (Deep Maroon #6B2C3E)
- * 7. Customer Reviews ("Loved by Our Bhaamas")
- * 8. Instagram Reel & Community Showcase (@bhaama_veedhi 🤍)
+ * Exactly matched to user interface mockup:
+ * 1. Hero Banner (left typography + right scalloped dish)
+ * 2. ✦ Shop by Category ✦ (4 cards: Earrings, Necklaces, Bracelets, Chains)
+ * 3. ✦ New Arrivals ✦ (Banner with bow necklace & "EXPLORE COLLECTION →")
+ * 4. Product Catalog Grid (Category tabs, live search, quick view & cart)
+ * 5. The Story of Bhaama Veedhi (Deep Maroon with golden lotus art & "OUR STORY →")
+ * 6. ✦ Our Happy Customers ✦ (3 customer review cards with circular avatars)
+ * 7. ✦ Follow Us On Instagram ✦ (6 photo tiles)
  */
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
@@ -19,14 +17,9 @@ import {
   Sparkles,
   Loader2,
   PackageOpen,
-  Truck,
-  Heart,
-  MessageCircle,
-  ShieldCheck,
   Star,
   Instagram,
   ArrowRight,
-  Filter,
   X,
 } from "lucide-react";
 import { Hero } from "./Hero";
@@ -45,42 +38,69 @@ export function StoreFront() {
   const searchQuery = useStore((s) => s.searchQuery);
   const setSearchQuery = useStore((s) => s.setSearchQuery);
 
+  // 4 visual category cards matching mockup
+  const categoryCards = [
+    {
+      name: "Earrings",
+      label: "Earrings",
+      image: "/brand/cat-earrings-photo.jpg",
+    },
+    {
+      name: "Necklaces",
+      label: "Necklaces",
+      image: "/brand/cat-necklaces-photo.jpg",
+    },
+    {
+      name: "Bracelets",
+      label: "Bracelets",
+      image: "/brand/cat-bracelets-photo.jpg",
+    },
+    {
+      name: "Chains",
+      label: "Chains",
+      image: "/brand/cat-chains-photo.jpg",
+    },
+  ];
+
+  // Instagram 6 photo tiles matching mockup
+  const instagramPhotos = [
+    { id: 1, src: "/brand/insta-1.jpg", alt: "Baby's breath florals on silk" },
+    { id: 2, src: "/brand/insta-2.jpg", alt: "Gold floral clover pendant" },
+    { id: 3, src: "/brand/insta-3.jpg", alt: "Deep velvety red roses" },
+    { id: 4, src: "/brand/insta-4.jpg", alt: "Bow pearl earrings" },
+    { id: 5, src: "/brand/insta-5.jpg", alt: "Baby's breath sprig bouquet" },
+    { id: 6, src: "/brand/insta-6.jpg", alt: "Gold flower pendant in gift box" },
+  ];
+
+  // Customer reviews matching mockup
+  const customerReviews = [
+    {
+      avatar: "/brand/customer-1.jpg",
+      quote: "Absolutely loved the earrings! So elegant and lightweight ♡",
+      author: "Ananya R.",
+    },
+    {
+      avatar: "/brand/customer-2.jpg",
+      quote: "Such a pretty collection. Will definitely shop again!",
+      author: "Sneha M.",
+    },
+    {
+      avatar: "/brand/customer-3.jpg",
+      quote: "Minimal, classy and affordable. Just perfect! ♡",
+      author: "Diya S.",
+    },
+  ];
+
   // Derive distinct categories from current catalog
   const categories = useMemo(() => {
     const set = new Set<string>();
     products.forEach((p) => {
       if (p.category && p.category.trim()) set.add(p.category.trim());
     });
-    return ["All", ...Array.from(set)];
+    return ["All", "Earrings", "Necklaces", "Bracelets", "Chains", ...Array.from(set).filter(
+      (c) => !["all", "earrings", "necklaces", "bracelets", "chains"].includes(c.toLowerCase())
+    )];
   }, [products]);
-
-  // Visual category cards
-  const categoryCards = [
-    {
-      name: "Earrings",
-      label: "Earrings",
-      subtitle: "Chandbalis, studs & drops",
-      image: "/products/earrings-chandbali.png",
-    },
-    {
-      name: "Necklaces",
-      label: "Necklaces",
-      subtitle: "Dainty chains & chokers",
-      image: "/products/necklace-vine.png",
-    },
-    {
-      name: "Bangles",
-      label: "Bracelets & Bangles",
-      subtitle: "Kadas, stacks & cuffs",
-      image: "/products/bangle-kada.png",
-    },
-    {
-      name: "Rings",
-      label: "Rings & Chains",
-      subtitle: "Solitaires & cocktail rings",
-      image: "/products/ring-solitaire.png",
-    },
-  ];
 
   // Fetch catalog on mount
   useEffect(() => {
@@ -107,7 +127,8 @@ export function StoreFront() {
     return products.filter((p) => {
       const matchCat =
         activeCategory === "All" ||
-        p.category.trim().toLowerCase() === activeCategory.trim().toLowerCase();
+        p.category.trim().toLowerCase().includes(activeCategory.trim().toLowerCase()) ||
+        activeCategory.trim().toLowerCase().includes(p.category.trim().toLowerCase());
 
       const q = searchQuery.trim().toLowerCase();
       const matchSearch =
@@ -120,11 +141,6 @@ export function StoreFront() {
     });
   }, [products, activeCategory, searchQuery]);
 
-  // Pick top 4 products for Best Sellers
-  const bestSellers = useMemo(() => {
-    return products.slice(0, 4);
-  }, [products]);
-
   const selectCategoryAndScroll = (categoryName: string) => {
     setCategory(categoryName);
     setTimeout(() => {
@@ -134,47 +150,46 @@ export function StoreFront() {
 
   return (
     <>
-      {/* 1. Hero Banner */}
+      {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Shop by Category Section (White Background) */}
-      <section id="categories" className="bg-white py-16 border-b border-[#E8DAD5]">
+      {/* 2. Shop by Category Section */}
+      <section id="categories" className="bg-[#FAF6F0] py-14 sm:py-16 border-b border-[#E8DAD5]/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
-              Explore by Style
-            </span>
-            <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-normal text-[#6B2C3E]">
+          {/* Section Heading with horizontal rules */}
+          <div className="flex items-center justify-center gap-3 sm:gap-6 mb-10">
+            <span className="hidden sm:block h-px w-24 sm:w-36 md:w-52 bg-[#D6B98C]/60" />
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-[#592534] flex items-center gap-2.5">
+              <span className="text-[#D6B98C] text-sm sm:text-base">✦</span>
               Shop by Category
+              <span className="text-[#D6B98C] text-sm sm:text-base">✦</span>
             </h2>
-            <p className="mt-2 text-sm text-[#493B37]">
-              Everyday luxury for every mood. Select a category to explore our curated pieces.
-            </p>
+            <span className="hidden sm:block h-px w-24 sm:w-36 md:w-52 bg-[#D6B98C]/60" />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {/* 4 Category Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             {categoryCards.map((cat, idx) => (
               <motion.div
                 key={cat.name}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
                 onClick={() => selectCategoryAndScroll(cat.name)}
-                className="group relative cursor-pointer overflow-hidden rounded-xl border border-[#E8DAD5] bg-[#F8F3EE] transition-all hover:shadow-md hover:border-[#D6B98C]"
+                className="group cursor-pointer overflow-hidden rounded-2xl border border-[#E5D7CE] bg-white shadow-xs transition-all hover:shadow-md hover:border-[#D6B98C] flex flex-col"
               >
-                <div className="aspect-square overflow-hidden bg-[#F8F3EE]/80">
+                <div className="aspect-[4/3] overflow-hidden bg-[#FAF6F0] rounded-t-2xl">
                   <img
                     src={cat.image}
                     alt={cat.label}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                    className="h-full w-full object-cover transition-transform duration-600 ease-out group-hover:scale-106"
                   />
                 </div>
-                <div className="p-4 text-center bg-white/95 backdrop-blur-xs border-t border-[#E8DAD5]">
-                  <h3 className="font-serif text-lg font-medium text-[#6B2C3E] group-hover:text-[#85374E] transition-colors">
+                <div className="py-3.5 px-3 text-center bg-white border-t border-[#E8DAD5]/40">
+                  <h3 className="font-serif text-base sm:text-lg font-medium text-[#592534] group-hover:text-[#6B2C3E] transition-colors">
                     {cat.label}
                   </h3>
-                  <p className="text-[11px] text-[#8B6C61] mt-0.5">{cat.subtitle}</p>
                 </div>
               </motion.div>
             ))}
@@ -182,33 +197,69 @@ export function StoreFront() {
         </div>
       </section>
 
-      {/* 3. New Arrivals & Full Collection (Warm Ivory Background) */}
-      <section id="collection" className="bg-[#F8F3EE] py-16 sm:py-20 border-b border-[#E8DAD5]">
+      {/* 3. New Arrivals Banner */}
+      <section className="bg-[#FAF6F0] py-8 sm:py-12 border-b border-[#E8DAD5]/60 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl border border-[#E5D7CE] bg-gradient-to-r from-[#FAF2EC] via-[#FDF8F5] to-[#F5E6DC] shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-12 items-center">
+              {/* Left/Center Content */}
+              <div className="md:col-span-7 lg:col-span-8 p-8 sm:p-12 md:p-16 flex flex-col items-center md:items-start text-center md:text-left z-10">
+                <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-[#592534] flex items-center gap-2">
+                  <span className="text-[#D6B98C] text-sm">✦</span>
+                  New Arrivals
+                  <span className="text-[#D6B98C] text-sm">✦</span>
+                </h3>
+                <p className="mt-2 text-sm sm:text-base text-[#6B554F] font-sans">
+                  Discover your new favourites ♡
+                </p>
+
+                <div className="mt-6">
+                  <button
+                    onClick={() => selectCategoryAndScroll("All")}
+                    className="rounded-full border border-[#6B2C3E] px-7 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#6B2C3E] transition-all hover:bg-[#6B2C3E] hover:text-white hover:shadow-md"
+                  >
+                    EXPLORE COLLECTION →
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Bow Necklace Visual */}
+              <div className="md:col-span-5 lg:col-span-4 h-48 sm:h-64 md:h-full overflow-hidden flex items-center justify-center">
+                <img
+                  src="/brand/new-arrivals-bow.jpg"
+                  alt="Gold bow necklace on champagne silk drape"
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Product Catalog / Collection Grid */}
+      <section id="collection" className="bg-[#FAF6F0] py-14 sm:py-16 border-b border-[#E8DAD5]/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="flex flex-col items-center text-center">
-            <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
-              New Arrivals
-            </span>
-            <h2 className="mt-2 font-serif text-3xl sm:text-5xl font-normal text-[#6B2C3E]">
-              Discover your new favourites ♡
+          <div className="flex flex-col items-center text-center mb-8">
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#592534]">
+              {activeCategory === "All" ? "Featured Collection" : `${activeCategory} Collection`}
             </h2>
-            <p className="mt-3 max-w-xl text-sm sm:text-base text-[#493B37]">
-              Minimal, elegant, and timeless jewellery handcrafted to accompany your everyday story.
+            <p className="mt-1.5 text-xs sm:text-sm text-[#8B6C61]">
+              Everyday elegance handcrafted with care. Styled for Every Bhaama.
             </p>
           </div>
 
           {/* Dynamic Category Filter Pills */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
                 className={cn(
-                  "rounded-full px-5 py-2 text-xs sm:text-sm font-medium transition-all tracking-wide",
+                  "rounded-full px-5 py-1.5 text-xs sm:text-sm font-medium transition-all tracking-wide",
                   activeCategory.trim().toLowerCase() === cat.trim().toLowerCase()
-                    ? "bg-[#6B2C3E] text-white shadow-sm"
-                    : "border border-[#E8DAD5] bg-white text-[#30272A]/80 hover:border-[#D6B98C] hover:text-[#6B2C3E]"
+                    ? "bg-[#6B2C3E] text-white shadow-xs"
+                    : "border border-[#E5D7CE] bg-white text-[#30272A]/85 hover:border-[#D6B98C] hover:text-[#6B2C3E]"
                 )}
               >
                 {cat}
@@ -218,7 +269,7 @@ export function StoreFront() {
 
           {/* Active Search Filter Banner */}
           {searchQuery && (
-            <div className="mt-6 flex items-center justify-between rounded-lg border border-[#D6B98C] bg-white px-4 py-3 text-sm text-[#30272A]">
+            <div className="mb-6 flex items-center justify-between rounded-xl border border-[#D6B98C] bg-white px-4 py-2.5 text-xs sm:text-sm text-[#30272A] shadow-xs">
               <span>
                 Showing results for <strong>&ldquo;{searchQuery}&rdquo;</strong> ({filtered.length} piece{filtered.length === 1 ? "" : "s"} found)
               </span>
@@ -233,16 +284,16 @@ export function StoreFront() {
 
           {/* Product Grid */}
           {loading ? (
-            <div className="mt-14 flex flex-col items-center justify-center gap-3 py-20 text-[#8B6C61]">
+            <div className="flex flex-col items-center justify-center gap-3 py-16 text-[#8B6C61]">
               <Loader2 className="size-8 animate-spin text-[#6B2C3E]" />
-              <p className="text-sm">Unveiling our collection…</p>
+              <p className="text-xs sm:text-sm font-medium">Unveiling our collection…</p>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="mt-14 flex flex-col items-center justify-center gap-3 py-20 text-center">
-              <PackageOpen className="size-10 text-[#8B6C61]" />
-              <p className="font-serif text-xl text-[#6B2C3E]">No pieces found</p>
-              <p className="text-sm text-[#493B37]">
-                Try selecting another category or clearing your search filter.
+            <div className="flex flex-col items-center justify-center gap-3 py-16 text-center bg-white rounded-2xl border border-[#E5D7CE] p-8">
+              <PackageOpen className="size-9 text-[#8B6C61]" />
+              <p className="font-serif text-xl text-[#592534]">No pieces found in this category</p>
+              <p className="text-xs text-[#8B6C61] max-w-sm">
+                Try selecting &quot;All&quot; or clearing your search to explore the rest of the collection.
               </p>
               <Button
                 variant="outline"
@@ -251,13 +302,13 @@ export function StoreFront() {
                   setCategory("All");
                   setSearchQuery("");
                 }}
-                className="mt-3 border-[#6B2C3E] text-[#6B2C3E]"
+                className="mt-2 rounded-full border-[#6B2C3E] text-[#6B2C3E] hover:bg-[#6B2C3E] hover:text-white"
               >
                 View All Pieces
               </Button>
             </div>
           ) : (
-            <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
               {filtered.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} />
               ))}
@@ -266,189 +317,95 @@ export function StoreFront() {
         </div>
       </section>
 
-      {/* 4. Best Sellers Spotlight (White Background) */}
-      {products.length > 3 && (
-        <section className="bg-white py-16 border-b border-[#E8DAD5]">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between mb-10 gap-4">
-              <div>
-                <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
-                  Most Loved
-                </span>
-                <h2 className="mt-1 font-serif text-2xl sm:text-3xl font-normal text-[#6B2C3E]">
-                  Bhaama Best Sellers
-                </h2>
-              </div>
-              <button
-                onClick={() => selectCategoryAndScroll("All")}
-                className="text-xs uppercase tracking-widest font-semibold text-[#6B2C3E] hover:text-[#85374E] flex items-center gap-1.5"
-              >
-                EXPLORE ALL PIECES <ArrowRight className="size-3.5" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              {bestSellers.map((p, i) => (
-                <ProductCard key={`bestseller-${p.id}`} product={p} index={i} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 5. Trust & Promise Banner (Dusty Blush #E8DAD5) */}
-      <section className="bg-[#E8DAD5] py-14 border-b border-[#D6B98C]/40">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="flex flex-col items-center text-center p-3">
-              <span className="flex size-12 items-center justify-center rounded-full bg-white text-[#6B2C3E] shadow-xs mb-3">
-                <Truck className="size-5 text-[#6B2C3E]" />
-              </span>
-              <h3 className="font-sans font-semibold text-sm text-[#30272A] tracking-wide">
-                Dispatch in 3–4 Days
-              </h3>
-              <p className="mt-1 text-xs text-[#493B37] max-w-xs">
-                Free tracked shipping across India on all orders above ₹499.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-3">
-              <span className="flex size-12 items-center justify-center rounded-full bg-white text-[#6B2C3E] shadow-xs mb-3">
-                <Sparkles className="size-5 text-[#6B2C3E]" />
-              </span>
-              <h3 className="font-sans font-semibold text-sm text-[#30272A] tracking-wide">
-                Premium Handcrafted Finish
-              </h3>
-              <p className="mt-1 text-xs text-[#493B37] max-w-xs">
-                Subtle champagne-gold tones created for delicate everyday elegance.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-3">
-              <span className="flex size-12 items-center justify-center rounded-full bg-white text-[#6B2C3E] shadow-xs mb-3">
-                <MessageCircle className="size-5 text-[#6B2C3E]" />
-              </span>
-              <h3 className="font-sans font-semibold text-sm text-[#30272A] tracking-wide">
-                WhatsApp Order Assistance
-              </h3>
-              <p className="mt-1 text-xs text-[#493B37] max-w-xs">
-                Chat directly with us for styling guidance, gift packing, and order queries.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-3">
-              <span className="flex size-12 items-center justify-center rounded-full bg-white text-[#6B2C3E] shadow-xs mb-3">
-                <Heart className="size-5 text-[#6B2C3E]" />
-              </span>
-              <h3 className="font-sans font-semibold text-sm text-[#30272A] tracking-wide">
-                Styled for Every Bhaama
-              </h3>
-              <p className="mt-1 text-xs text-[#493B37] max-w-xs">
-                Jewellery that celebrates quiet confidence, beauty, and individuality.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. The Story of Bhaama Veedhi (Deep Maroon #6B2C3E Background) */}
-      <section id="story" className="bg-[#6B2C3E] text-[#F8F3EE] py-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
-        <div className="pointer-events-none absolute -left-20 top-0 size-72 rounded-full bg-[#D6B98C]/10 blur-3xl" />
-        <div className="pointer-events-none absolute -right-20 bottom-0 size-72 rounded-full bg-[#D6B98C]/10 blur-3xl" />
-
-        <div className="mx-auto max-w-3xl relative z-10">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span className="h-px w-8 bg-[#D6B98C]" />
-            <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-[#D6B98C]">
-              Our Heritage & Vision
-            </span>
-            <span className="h-px w-8 bg-[#D6B98C]" />
+      {/* 5. The Story of Bhaama Veedhi (Deep Maroon Banner) */}
+      <section id="story" className="bg-[#6B2C3E] text-[#FAF6F0] py-14 sm:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="mx-auto max-w-7xl relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Left Golden Lotus Art */}
+          <div className="hidden lg:flex items-center justify-center shrink-0 opacity-85">
+            <img
+              src="/brand/lotus-left.jpg"
+              alt=""
+              className="h-14 w-auto object-contain mix-blend-screen"
+            />
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal leading-tight text-white mb-6">
-            The Story of Bhaama Veedhi
-          </h2>
-
-          <p className="text-sm sm:text-base md:text-lg text-[#F8F3EE]/90 leading-relaxed font-normal mb-8 max-w-2xl mx-auto">
-            A place where every Bhaama finds her style. Jewellery that celebrates confidence,
-            beauty and individuality. We believe in everyday luxury—pieces delicate enough for
-            your daily routine, yet enchanting enough to remember forever.
-          </p>
-
-          <a
-            href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hello Bhaama Veedhi! I would love to learn more about your pieces and custom styling.")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-xs border border-[#D6B98C] px-8 py-3 text-xs uppercase tracking-[0.25em] font-semibold text-[#D6B98C] hover:bg-[#D6B98C] hover:text-[#6B2C3E] transition-all"
-          >
-            OUR STORY ♡
-          </a>
-        </div>
-      </section>
-
-      {/* 7. Customer Reviews Section (Warm Ivory #F8F3EE) */}
-      <section id="reviews" className="bg-[#F8F3EE] py-20 border-b border-[#E8DAD5]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
-              Customer Love
-            </span>
-            <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-normal text-[#6B2C3E]">
-              Loved by Our Bhaamas
-            </h2>
-            <p className="mt-2 text-sm text-[#493B37]">
-              Real stories from women who bring a little sparkle to their everyday.
+          {/* Center Story Content */}
+          <div className="flex-1 text-center md:text-left max-w-2xl">
+            <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-white mb-2">
+              The Story of Bhaama Veedhi
+            </h3>
+            <p className="text-xs sm:text-sm text-[#F8F3EE]/90 leading-relaxed font-sans">
+              A place where every Bhaama finds her style.
+              <br />
+              Jewellery that celebrates confidence, beauty and individuality.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                quote:
-                  "The quality and shine are breathtaking! Wore the Pearl Drop studs to work and received so many compliments. Dainty, lightweight, and so classy.",
-                author: "Ananya R.",
-                city: "Hyderabad",
-                item: "Pearl Drop Studs",
-              },
-              {
-                quote:
-                  "Ordering on WhatsApp was so seamless. My package arrived within 3 days in beautiful packaging. It feels like unboxing a luxury gift to myself!",
-                author: "Sneha M.",
-                city: "Bengaluru",
-                item: "Emerald Vine Necklace",
-              },
-              {
-                quote:
-                  "The gold tone is so subtle and elegant, not overly yellow or flashy. Truly everyday luxury at an affordable price. Definitely ordering again! 🤍",
-                author: "Pooja K.",
-                city: "Chennai",
-                item: "Solitaire Diamond Ring",
-              },
-            ].map((rev, i) => (
+          {/* Right Button & Lotus Art */}
+          <div className="flex items-center gap-6 shrink-0">
+            <a
+              href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! I would love to learn more about your pieces and custom styling ♡")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white px-7 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-all hover:bg-white hover:text-[#6B2C3E] hover:shadow-md"
+            >
+              OUR STORY →
+            </a>
+
+            <div className="hidden lg:flex items-center justify-center opacity-85">
+              <img
+                src="/brand/lotus-right.jpg"
+                alt=""
+                className="h-14 w-auto object-contain mix-blend-screen"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Our Happy Customers */}
+      <section id="reviews" className="bg-[#FAF6F0] py-14 sm:py-16 border-b border-[#E8DAD5]/60">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Heading with horizontal rules */}
+          <div className="flex items-center justify-center gap-3 sm:gap-6 mb-10">
+            <span className="hidden sm:block h-px w-24 sm:w-36 md:w-52 bg-[#D6B98C]/60" />
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-[#592534] flex items-center gap-2.5">
+              <span className="text-[#D6B98C] text-sm sm:text-base">✦</span>
+              Our Happy Customers
+              <span className="text-[#D6B98C] text-sm sm:text-base">✦</span>
+            </h2>
+            <span className="hidden sm:block h-px w-24 sm:w-36 md:w-52 bg-[#D6B98C]/60" />
+          </div>
+
+          {/* 3 Testimonial Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            {customerReviews.map((rev, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-between rounded-xl border border-[#E8DAD5] bg-white p-6 shadow-xs"
+                className="flex items-center gap-4 rounded-2xl border border-[#E5D7CE] bg-[#FAF6F0]/80 p-5 shadow-xs transition-all hover:bg-white hover:shadow-sm"
               >
-                <div>
-                  <div className="flex gap-1 text-[#D6B98C] mb-3">
+                {/* Circular Avatar */}
+                <div className="size-14 shrink-0 overflow-hidden rounded-full border border-[#D6B98C]/40 bg-white">
+                  <img
+                    src={rev.avatar}
+                    alt={rev.author}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                {/* Stars + Quote + Author */}
+                <div className="flex-1">
+                  <div className="flex gap-1 text-[#6B2C3E] text-xs mb-1.5">
                     {[...Array(5)].map((_, idx) => (
-                      <Star key={idx} className="size-4 fill-[#D6B98C]" />
+                      <span key={idx}>★</span>
                     ))}
                   </div>
-                  <p className="text-sm text-[#493B37] leading-relaxed italic">
+                  <p className="text-xs sm:text-sm text-[#493B37] leading-snug">
                     &ldquo;{rev.quote}&rdquo;
                   </p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-[#F8F3EE] flex items-center justify-between">
-                  <div>
-                    <p className="font-sans font-semibold text-sm text-[#6B2C3E]">
-                      {rev.author}
-                    </p>
-                    <p className="text-xs text-[#8B6C61]">{rev.city}</p>
-                  </div>
-                  <span className="text-[10px] bg-[#E8DAD5]/50 text-[#6B2C3E] px-2 py-0.5 rounded-full font-medium">
-                    Verified Buyer
-                  </span>
+                  <p className="mt-1.5 text-xs font-semibold text-[#6B2C3E]">
+                    - {rev.author}
+                  </p>
                 </div>
               </div>
             ))}
@@ -456,74 +413,45 @@ export function StoreFront() {
         </div>
       </section>
 
-      {/* 8. Instagram Reel & Community Showcase (White Background) */}
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <div className="max-w-2xl mx-auto mb-10">
-            <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
-              Social Community
-            </span>
-            <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-normal text-[#6B2C3E]">
-              @bhaama_veedhi 🤍
+      {/* 7. Follow Us On Instagram */}
+      <section className="bg-[#FAF6F0] py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Heading with horizontal rules */}
+          <div className="flex items-center justify-center gap-3 sm:gap-6 mb-10">
+            <span className="hidden sm:block h-px w-24 sm:w-36 md:w-52 bg-[#D6B98C]/60" />
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-[#592534] flex items-center gap-2.5">
+              <span className="text-[#D6B98C] text-sm sm:text-base">✦</span>
+              Follow Us On Instagram
+              <span className="text-[#D6B98C] text-sm sm:text-base">✦</span>
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-[#493B37] font-serif italic">
-              &ldquo;{BRAND.quote}&rdquo;
-            </p>
-            <p className="mt-1 text-xs text-[#8B6C61]">
-              Tag us in your everyday moments to get featured on our page.
-            </p>
+            <span className="hidden sm:block h-px w-24 sm:w-36 md:w-52 bg-[#D6B98C]/60" />
           </div>
 
-          {/* Reel / Photo Grid Preview */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
-            {[
-              {
-                title: "Emerald Vine",
-                img: "/products/necklace-vine.png",
-              },
-              {
-                title: "Royal Chandbali",
-                img: "/products/earrings-chandbali.png",
-              },
-              {
-                title: "Kada Bangles",
-                img: "/products/bangle-kada.png",
-              },
-              {
-                title: "Solitaire Ring",
-                img: "/products/ring-solitaire.png",
-              },
-            ].map((it, idx) => (
+          {/* 6 Instagram Photo Tiles */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+            {instagramPhotos.map((item) => (
               <a
-                key={idx}
+                key={item.id}
                 href={BRAND.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative aspect-square overflow-hidden rounded-xl border border-[#E8DAD5] bg-[#F8F3EE]"
+                className="group relative aspect-square overflow-hidden rounded-xl border border-[#E5D7CE] bg-white shadow-xs"
               >
                 <img
-                  src={it.img}
-                  alt={it.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-108"
+                  src={item.src}
+                  alt={item.alt}
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
                 />
+                {/* Instagram hover overlay */}
                 <div className="absolute inset-0 bg-[#6B2C3E]/75 opacity-0 transition-opacity duration-300 flex items-center justify-center group-hover:opacity-100">
                   <div className="text-center text-white p-2">
-                    <Instagram className="size-6 mx-auto mb-1" />
-                    <span className="text-xs font-medium">View on Instagram</span>
+                    <Instagram className="size-5 mx-auto mb-1 text-[#D6B98C]" />
+                    <span className="text-[10px] uppercase tracking-wider font-semibold">@bhaama_veedhi</span>
                   </div>
                 </div>
               </a>
             ))}
           </div>
-
-          <a
-            href={BRAND.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xs bg-[#6B2C3E] px-8 py-3 text-xs uppercase tracking-widest font-semibold text-white hover:bg-[#85374E] shadow-sm transition-all"
-          >
-            <Instagram className="size-4" /> FOLLOW {BRAND.instagramHandle}
-          </a>
         </div>
       </section>
     </>

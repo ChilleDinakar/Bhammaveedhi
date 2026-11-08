@@ -2,21 +2,20 @@
 
 /**
  * BHAAMA VEEDHI — Hero Section
- * Brand Direction: Minimal Luxury & Everyday Elegance
- * Visual: Warm, natural, minimal photography with editorial serif typography
- * - Caption: "A LITTLE SOMETHING BEAUTIFUL"
- * - Title: "Everyday Elegance, Made for You."
- * - Subtext: "Discover jewellery that adds a little charm to every look."
- * - CTAs: "SHOP NOW" (Solid Maroon) & "EXPLORE COLLECTION" (Outline)
+ * Exactly matched to design mockup:
+ * - Left: Eyebrow, "Everyday Elegance, Made for You.", subtext, "SHOP NOW →" pill button, carousel dots
+ * - Right: Scalloped dish with bow earrings on champagne silk drapery with baby's breath flowers
  */
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
   const setView = useStore((s) => s.setView);
   const setCategory = useStore((s) => s.setCategory);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   const shopCollection = () => {
     setCategory("All");
@@ -28,108 +27,125 @@ export function Hero() {
     }, 60);
   };
 
-  const exploreCategories = () => {
-    setView("store");
-    setTimeout(() => {
-      document
-        .getElementById("categories")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 60);
-  };
-
   return (
-    <section className="relative isolate overflow-hidden bg-[#F8F3EE] border-b border-[#E8DAD5]">
-      {/* Background with luxury subtle warm styling */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+    <section className="relative overflow-hidden bg-[#FAF6F0] border-b border-[#E8DAD5]/60">
+      {/* Background silk drapery texture */}
+      <div className="absolute inset-0 -z-10 overflow-hidden opacity-35 mix-blend-multiply">
         <img
-          src="/products/hero.png"
-          alt="Bhaama Veedhi jewellery aesthetic"
-          className="h-full w-full object-cover object-center opacity-30 mix-blend-multiply"
+          src="/brand/hero-banner.jpg"
+          alt=""
+          className="h-full w-full object-cover object-center filter blur-[1px]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F8F3EE]/80 via-[#F8F3EE]/60 to-[#F8F3EE]" />
       </div>
 
-      {/* Decorative Champagne Gold ambient glows */}
-      <div className="pointer-events-none absolute -left-20 top-12 size-80 rounded-full bg-[#D6B98C]/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-10 size-96 rounded-full bg-[#E8DAD5]/40 blur-3xl" />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Column: Brand Typography & CTA */}
+          <div className="md:col-span-6 lg:col-span-6 flex flex-col justify-center text-left">
+            {/* Eyebrow */}
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-xs sm:text-sm uppercase tracking-[0.28em] font-medium text-[#8B6C61] mb-3"
+            >
+              A Little Something Beautiful
+            </motion.p>
 
-      <div className="mx-auto flex min-h-[74vh] max-w-5xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8">
-        {/* Caption */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-2 mb-4"
-        >
-          <span className="h-px w-6 bg-[#D6B98C]" />
-          <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
-            A Little Something Beautiful
-          </span>
-          <span className="h-px w-6 bg-[#D6B98C]" />
-        </motion.div>
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.12] text-[#592534] tracking-tight"
+            >
+              Everyday Elegance,
+              <span className="block italic font-serif text-[#592534] mt-1 sm:mt-2">
+                Made for You.
+              </span>
+            </motion.h1>
 
-        {/* Main Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] text-[#6B2C3E] max-w-4xl"
-        >
-          Everyday Elegance,
-          <span className="block italic font-normal mt-1 sm:mt-2 text-[#6B2C3E]">
-            Made for You.
-          </span>
-        </motion.h1>
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="mt-5 max-w-md text-sm sm:text-base text-[#493B37] leading-relaxed font-sans"
+            >
+              Discover jewellery that adds a little charm to every look.
+            </motion.p>
 
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-xl text-sm sm:text-base md:text-lg text-[#493B37] font-normal leading-relaxed"
-        >
-          Discover jewellery that adds a little charm to every look. Handcrafted pieces
-          designed to celebrate confidence, beauty, and individuality.
-        </motion.p>
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-6"
+            >
+              <Button
+                onClick={shopCollection}
+                size="lg"
+                className="rounded-full bg-[#6B2C3E] px-8 py-3.5 text-xs sm:text-sm font-semibold uppercase tracking-wider text-white shadow-md transition-all hover:bg-[#52212f] hover:shadow-lg hover:scale-102"
+              >
+                SHOP NOW <span className="ml-1 text-sm">→</span>
+              </Button>
+            </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 flex flex-col sm:flex-row items-center gap-4"
-        >
-          <Button
-            onClick={shopCollection}
-            size="lg"
-            className="w-full sm:w-auto px-8 py-3.5 bg-[#6B2C3E] text-white hover:bg-[#85374E] text-xs sm:text-sm font-semibold tracking-widest uppercase rounded-sm shadow-md transition-all hover:shadow-lg"
+            {/* Slider Dots */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="mt-8 flex items-center gap-2"
+            >
+              <button
+                onClick={() => setActiveSlide(0)}
+                aria-label="Slide 1"
+                className={`h-2 rounded-full transition-all ${
+                  activeSlide === 0
+                    ? "w-6 bg-[#6B2C3E]"
+                    : "w-2 bg-[#D6B98C]/60 hover:bg-[#6B2C3E]/60"
+                }`}
+              />
+              <button
+                onClick={() => setActiveSlide(1)}
+                aria-label="Slide 2"
+                className={`h-2 rounded-full transition-all ${
+                  activeSlide === 1
+                    ? "w-6 bg-[#6B2C3E]"
+                    : "w-2 bg-[#D6B98C]/60 hover:bg-[#6B2C3E]/60"
+                }`}
+              />
+              <button
+                onClick={() => setActiveSlide(2)}
+                aria-label="Slide 3"
+                className={`h-2 rounded-full transition-all ${
+                  activeSlide === 2
+                    ? "w-6 bg-[#6B2C3E]"
+                    : "w-2 bg-[#D6B98C]/60 hover:bg-[#6B2C3E]/60"
+                }`}
+              />
+            </motion.div>
+          </div>
+
+          {/* Right Column: Hero Visual on Scalloped Dish */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="md:col-span-6 lg:col-span-6 flex items-center justify-center relative"
           >
-            SHOP NOW
-          </Button>
-
-          <Button
-            onClick={exploreCategories}
-            variant="outline"
-            size="lg"
-            className="w-full sm:w-auto px-8 py-3.5 border-[#6B2C3E] text-[#6B2C3E] hover:bg-[#E8DAD5]/40 text-xs sm:text-sm font-semibold tracking-widest uppercase rounded-sm transition-all"
-          >
-            EXPLORE CATEGORIES
-          </Button>
-        </motion.div>
-
-        {/* Trust badge note */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-10 flex items-center gap-4 text-[11px] text-[#8B6C61] tracking-wide"
-        >
-          <span>Free shipping above ₹499</span>
-          <span>•</span>
-          <span>Dainty & Everyday Wear</span>
-          <span>•</span>
-          <span>WhatsApp Assisted Order</span>
-        </motion.div>
+            <div className="relative w-full max-w-lg overflow-hidden rounded-3xl shadow-xl border border-[#D6B98C]/30 bg-white/40 backdrop-blur-xs group">
+              <img
+                src="/brand/hero-plate.jpg"
+                alt="Bhaama Veedhi bow earrings displayed on scalloped ceramic dish"
+                className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-104"
+              />
+              {/* Subtle ambient light glow */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF6F0]/20 via-transparent to-transparent" />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

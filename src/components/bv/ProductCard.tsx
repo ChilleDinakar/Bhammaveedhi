@@ -43,12 +43,12 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.4), ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-[#E8DAD5] bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[#D6B98C]"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#E5D7CE] bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-[#D6B98C]"
     >
       {/* Image Container with Zoom */}
       <button
         onClick={() => openQuickView(product)}
-        className="relative aspect-square overflow-hidden bg-[#F8F3EE]/60"
+        className="relative aspect-square overflow-hidden bg-[#FAF6F0]"
         aria-label={`View ${product.title}`}
       >
         <img

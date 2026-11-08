@@ -2,146 +2,196 @@
 
 /**
  * BHAAMA VEEDHI — Footer
- * Maroon background (#6B2C3E) with Champagne Gold (#D6B98C) & Ivory (#F8F3EE) accents.
- * Includes Instagram, Email, WhatsApp "CHAT WITH US ♡", and policy details.
+ * Exactly matched to user interface mockup:
+ * - Maroon background (#6B2C3E)
+ * - Column 1: Arch Logo badge
+ * - Column 2: Quick Links (Shop, About Us, Contact)
+ * - Column 3: Policies (Shipping Policy, Return & Exchange, Privacy Policy)
+ * - Column 4: Let's Stay Connected ♡ (Instagram & WhatsApp circular buttons)
+ * - Column 5: Subscribe to our newsletter (Pill input with arrow button)
+ * - Bottom Bar: "© 2025 Bhaama Veedhi. All rights reserved."
  */
-import {
-  Instagram,
-  Mail,
-  Phone,
-  MessageCircle,
-  Sparkles,
-  Heart,
-} from "lucide-react";
+import { useState } from "react";
+import { Instagram, MessageCircle, ArrowRight, Heart } from "lucide-react";
 import { BRAND } from "@/lib/format";
+import { useToast } from "@/hooks/use-toast";
 
 export function Footer() {
-  return (
-    <footer className="mt-auto bg-[#6B2C3E] text-[#F8F3EE]">
-      {/* Decorative gold top border */}
-      <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#D6B98C] to-transparent" />
+  const [email, setEmail] = useState("");
+  const { toast } = useToast();
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-4">
-          {/* Brand + tagline */}
-          <div className="flex flex-col gap-3 md:col-span-2">
-            <div className="flex items-center gap-2">
-              <span className="flex size-9 items-center justify-center rounded-full bg-[#F8F3EE]/10 text-[#D6B98C]">
-                <Sparkles className="size-5" />
-              </span>
-              <div>
-                <span className="font-serif text-2xl font-bold tracking-wide text-[#F8F3EE]">
-                  Bhaama Veedhi
-                </span>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#D6B98C]">
-                  {BRAND.subtitle}
-                </p>
-              </div>
-            </div>
-            <p className="font-serif italic text-[#D6B98C] text-lg leading-relaxed max-w-md">
-              &ldquo;{BRAND.tagline}&rdquo;
-            </p>
-            <p className="text-sm text-[#F8F3EE]/75 max-w-md leading-relaxed font-sans">
-              Handcrafted daily-wear and festive jewelry for the woman who carries tradition with quiet confidence — every piece styled for every Bhaama.
-            </p>
-            <div className="pt-2">
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) {
+      toast({
+        title: "Please enter a valid email",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Welcome to the Bhaama Veedhi family! ✨",
+      description: "Thank you for subscribing to our newsletter.",
+    });
+    setEmail("");
+  };
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <footer id="footer" className="mt-auto bg-[#6B2C3E] text-[#FAF6F0]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-12 items-start">
+          {/* Column 1: Brand Logo Badge */}
+          <div className="md:col-span-3 flex flex-col items-start">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="group text-left"
+              aria-label="Back to top"
+            >
+              <img
+                src="/brand/footer-logo.png"
+                alt="Bhaama Veedhi — Styled for Every Bhaama"
+                className="h-20 w-auto object-contain transition-transform group-hover:scale-102"
+              />
+            </button>
+          </div>
+
+          {/* Column 2: Quick Links */}
+          <div className="md:col-span-2 flex flex-col gap-3">
+            <h4 className="font-serif text-base font-medium text-white tracking-wide">
+              Quick Links
+            </h4>
+            <ul className="flex flex-col gap-2 text-xs sm:text-sm text-[#F8F3EE]/85 font-sans">
+              <li>
+                <button
+                  onClick={() => scrollTo("collection")}
+                  className="transition-colors hover:text-[#D6B98C]"
+                >
+                  Shop
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollTo("story")}
+                  className="transition-colors hover:text-[#D6B98C]"
+                >
+                  About Us
+                </button>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! I have a question about your collection ♡")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-[#D6B98C]"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Policies */}
+          <div className="md:col-span-2 flex flex-col gap-3">
+            <h4 className="font-serif text-base font-medium text-white tracking-wide">
+              Policies
+            </h4>
+            <ul className="flex flex-col gap-2 text-xs sm:text-sm text-[#F8F3EE]/85 font-sans">
+              <li>
+                <a
+                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! What is your shipping policy?")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-[#D6B98C]"
+                >
+                  Shipping Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! What is your return & exchange policy?")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-[#D6B98C]"
+                >
+                  Return & Exchange
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! What is your privacy policy?")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-[#D6B98C]"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Let's Stay Connected ♡ */}
+          <div className="md:col-span-2 flex flex-col gap-3">
+            <h4 className="font-serif text-base font-medium text-white tracking-wide">
+              Let&apos;s Stay Connected ♡
+            </h4>
+            <div className="flex items-center gap-3 pt-1">
+              {/* Instagram circular button */}
               <a
-                href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! I have a question about your collection ♡")}`}
+                href={BRAND.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-[#D6B98C] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#30272A] shadow-sm transition-all hover:bg-[#F8F3EE] hover:shadow-md"
+                aria-label="Instagram @bhaama_veedhi"
+                className="flex size-9 items-center justify-center rounded-full border border-white/60 text-white transition-all hover:border-[#D6B98C] hover:bg-white hover:text-[#6B2C3E]"
               >
-                <MessageCircle className="size-4 text-[#6B2C3E]" />
-                CHAT WITH US ♡
+                <Instagram className="size-4" />
+              </a>
+
+              {/* WhatsApp circular button */}
+              <a
+                href={`https://wa.me/${BRAND.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp with Bhaama Veedhi"
+                className="flex size-9 items-center justify-center rounded-full border border-white/60 text-white transition-all hover:border-[#D6B98C] hover:bg-white hover:text-[#6B2C3E]"
+              >
+                <MessageCircle className="size-4" />
               </a>
             </div>
           </div>
 
-          {/* Quick links */}
-          <div className="flex flex-col gap-3">
-            <h3 className="font-serif text-lg text-[#D6B98C] font-semibold tracking-wide">
-              Shop Collections
-            </h3>
-            <ul className="flex flex-col gap-2.5 text-sm text-[#F8F3EE]/80 font-sans">
-              <li><a href="#collection" className="transition-colors hover:text-[#D6B98C]">Earrings</a></li>
-              <li><a href="#collection" className="transition-colors hover:text-[#D6B98C]">Necklaces</a></li>
-              <li><a href="#collection" className="transition-colors hover:text-[#D6B98C]">Bracelets & Bangles</a></li>
-              <li><a href="#collection" className="transition-colors hover:text-[#D6B98C]">Rings & Chains</a></li>
-              <li><a href="#collection" className="transition-colors hover:text-[#D6B98C]">New Arrivals</a></li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div className="flex flex-col gap-3">
-            <h3 className="font-serif text-lg text-[#D6B98C] font-semibold tracking-wide">
-              Connect With Us
-            </h3>
-            <ul className="flex flex-col gap-3 text-sm font-sans">
-              <li>
-                <a
-                  href={BRAND.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-3 text-[#F8F3EE]/85 transition-colors hover:text-[#D6B98C]"
+          {/* Column 5: Subscribe to our newsletter */}
+          <div className="md:col-span-3 flex flex-col gap-3">
+            <h4 className="font-serif text-base font-medium text-white tracking-wide">
+              Subscribe to our newsletter
+            </h4>
+            <form onSubmit={handleSubscribe} className="relative mt-1">
+              <div className="flex items-center rounded-full bg-[#FAF6F0] p-1 shadow-sm">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email address"
+                  className="w-full bg-transparent px-4 py-2 text-xs text-[#30272A] placeholder:text-[#8B6C61]/70 focus:outline-none font-sans"
+                />
+                <button
+                  type="submit"
+                  aria-label="Subscribe"
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#6B2C3E] text-white transition-transform hover:scale-105"
                 >
-                  <span className="flex size-9 items-center justify-center rounded-full bg-[#F8F3EE]/10 transition-colors group-hover:bg-[#D6B98C] group-hover:text-[#6B2C3E]">
-                    <Instagram className="size-4" />
-                  </span>
-                  <span className="flex flex-col">
-                    <span className="font-medium">Instagram</span>
-                    <span className="text-xs text-[#F8F3EE]/60">@bhaama_veedhi 🤍</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${BRAND.email}`}
-                  className="group flex items-center gap-3 text-[#F8F3EE]/85 transition-colors hover:text-[#D6B98C]"
-                >
-                  <span className="flex size-9 items-center justify-center rounded-full bg-[#F8F3EE]/10 transition-colors group-hover:bg-[#D6B98C] group-hover:text-[#6B2C3E]">
-                    <Mail className="size-4" />
-                  </span>
-                  <span className="flex flex-col">
-                    <span className="font-medium">Email</span>
-                    <span className="text-xs text-[#F8F3EE]/60">{BRAND.email}</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`https://wa.me/${BRAND.whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-3 text-[#F8F3EE]/85 transition-colors hover:text-[#D6B98C]"
-                >
-                  <span className="flex size-9 items-center justify-center rounded-full bg-[#F8F3EE]/10 transition-colors group-hover:bg-[#D6B98C] group-hover:text-[#6B2C3E]">
-                    <Phone className="size-4" />
-                  </span>
-                  <span className="flex flex-col">
-                    <span className="font-medium">WhatsApp / Orders</span>
-                    <span className="text-xs text-[#F8F3EE]/60">{BRAND.phone}</span>
-                  </span>
-                </a>
-              </li>
-            </ul>
+                  <ArrowRight className="size-4" />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
-        {/* Shipping / promise strip */}
-        <div className="mt-12 rounded-xl bg-[#F8F3EE]/5 p-4 text-center text-xs text-[#F8F3EE]/75 border border-[#D6B98C]/20">
-          Dispatched within 3–4 business days across India • Free shipping on orders above ₹499 • Handcrafted with love
-        </div>
-
-        {/* Bottom bar */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-[#F8F3EE]/15 pt-6 text-xs text-[#F8F3EE]/60 sm:flex-row">
-          <p>
-            © {new Date().getFullYear()} Bhaama Veedhi. All rights reserved.
-          </p>
-          <p className="flex items-center gap-1.5">
-            Styled with
-            <Heart className="size-3.5 fill-[#D6B98C] text-[#D6B98C]" />
-            for Every Bhaama
-          </p>
+        {/* Bottom Bar: Copyright */}
+        <div className="mt-14 border-t border-white/15 pt-6 text-center text-xs text-[#F8F3EE]/70 font-sans">
+          <p>© 2025 Bhaama Veedhi. All rights reserved.</p>
         </div>
       </div>
     </footer>
