@@ -6,7 +6,7 @@
  * Shows items, qty +/- controls, individual + total prices,
  * and the zero-cost "Checkout via WhatsApp" button.
  */
-import { ShoppingBag, Trash2, Plus, Minus, MessageCircle, X } from "lucide-react";
+import { ShoppingBag, Trash2, Plus, Minus, MessageCircle } from "lucide-react";
 import { useStore, selectCartTotal } from "@/store/useStore";
 import { formatINR, buildWhatsAppCheckoutUrl } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -55,21 +55,11 @@ export function CartDrawer() {
         className="flex w-full flex-col gap-0 bg-[#F8F3EE] p-0 sm:max-w-md border-l border-[#D6B98C]/30 shadow-2xl"
       >
         {/* Header */}
-        <SheetHeader className="border-b border-[#D6B98C]/20 bg-white/70 backdrop-blur-sm px-5 py-4 text-left">
-          <div className="flex items-center justify-between">
-            <SheetTitle className="flex items-center gap-2 font-serif text-[#6B2C3E] text-xl">
-              <ShoppingBag className="size-5 text-[#6B2C3E]" />
-              Your Collection ({items.reduce((acc, i) => acc + i.quantity, 0)})
-            </SheetTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={setOpen}
-              className="size-8 rounded-full text-[#6B2C3E] hover:bg-[#E8DAD5]/40"
-            >
-              <X className="size-4" />
-            </Button>
-          </div>
+        <SheetHeader className="border-b border-[#D6B98C]/20 bg-white/70 backdrop-blur-sm px-5 py-4 pr-12 text-left">
+          <SheetTitle className="flex items-center gap-2 font-serif text-[#6B2C3E] text-xl">
+            <ShoppingBag className="size-5 text-[#6B2C3E]" />
+            Your Collection ({items.reduce((acc, i) => acc + i.quantity, 0)})
+          </SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
