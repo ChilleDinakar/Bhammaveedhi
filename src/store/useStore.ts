@@ -51,6 +51,7 @@ type StoreState = {
   quickViewProduct: Product | null;
   /* Filters */
   activeCategory: string;
+  searchQuery: string;
   /* Shared product catalogue (fetched by StoreFront; read by Navbar
      to derive dynamic category links). Not persisted. */
   products: Product[];
@@ -76,6 +77,7 @@ type StoreState = {
 
   /* Filters */
   setCategory: (category: string) => void;
+  setSearchQuery: (query: string) => void;
 
   /* Catalogue */
   setProducts: (products: Product[]) => void;
@@ -90,6 +92,7 @@ export const useStore = create<StoreState>()(
       user: null,
       quickViewProduct: null,
       activeCategory: "All",
+      searchQuery: "",
       products: [],
 
       addToCart: (product, quantity = 1) => {
@@ -142,6 +145,7 @@ export const useStore = create<StoreState>()(
       closeQuickView: () => set({ quickViewProduct: null }),
 
       setCategory: (category) => set({ activeCategory: category }),
+      setSearchQuery: (query) => set({ searchQuery: query }),
 
       setProducts: (products) => set({ products }),
     }),

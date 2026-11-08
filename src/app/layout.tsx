@@ -1,50 +1,54 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 /* ============================================================
-   BHAAMA VEEDHI — Typography
-   Headings: Playfair Display (elegant serif)
-   Body/UI:  Inter (clean sans-serif)
+   BHAAMA VEEDHI — Typography (Brand Direction: Minimal Luxury)
+   Headings: Cormorant Garamond (refined luxury serif)
+   Body/UI:  Poppins (clean, readable modern sans-serif)
    ============================================================ */
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const poppins = Poppins({
+  variable: "--font-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Bhaama Veedhi — Every woman deserves a little sparkle ✨",
+  title: "Bhaama Veedhi — Styled for Every Bhaama ✨",
   description:
-    "Bhaama Veedhi — premium handcrafted jewelry. Elegant necklaces, earrings, bangles & rings. Every woman deserves a little sparkle in her everyday story.",
+    "Everyday elegance, made for you. Discover handcrafted dainty and minimal jewellery that adds a little charm to every look.",
   keywords: [
     "Bhaama Veedhi",
-    "jewelry",
-    "gold jewelry",
-    "Indian jewelry",
+    "dainty jewellery",
+    "everyday jewellery",
+    "minimal jewellery",
+    "gold jewellery",
+    "Indian jewellery",
     "necklaces",
     "earrings",
     "bangles",
+    "bracelets",
     "rings",
-    "premium jewelry",
+    "premium jewellery",
   ],
   authors: [{ name: "Bhaama Veedhi" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo.svg",
   },
   openGraph: {
-    title: "Bhaama Veedhi — Premium Handcrafted Jewelry",
+    title: "Bhaama Veedhi — Everyday Elegance, Made for You ✨",
     description:
-      "Every woman deserves a little sparkle in her everyday story ✨",
+      "A little love, a little sparkle & a whole lot of pretty. Discover jewellery designed for your everyday style.",
     siteName: "Bhaama Veedhi",
     type: "website",
   },
@@ -58,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} antialiased bg-background text-foreground`}
+        className={`${poppins.variable} ${cormorant.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
         <Toaster />

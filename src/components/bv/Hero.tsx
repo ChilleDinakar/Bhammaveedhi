@@ -2,13 +2,16 @@
 
 /**
  * BHAAMA VEEDHI — Hero Section
- * Cinematic, full-width. Deep maroon background with glowing gold accents.
- * Displays the tagline + "Shop Collection" CTA.
+ * Brand Direction: Minimal Luxury & Everyday Elegance
+ * Visual: Warm, natural, minimal photography with editorial serif typography
+ * - Caption: "A LITTLE SOMETHING BEAUTIFUL"
+ * - Title: "Everyday Elegance, Made for You."
+ * - Subtext: "Discover jewellery that adds a little charm to every look."
+ * - CTAs: "SHOP NOW" (Solid Maroon) & "EXPLORE COLLECTION" (Outline)
  */
 import { motion } from "framer-motion";
-import { Sparkles, ChevronDown } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { useStore } from "@/store/useStore";
-import { BRAND } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
@@ -18,7 +21,6 @@ export function Hero() {
   const shopCollection = () => {
     setCategory("All");
     setView("store");
-    // Scroll to the gallery
     setTimeout(() => {
       document
         .getElementById("collection")
@@ -26,92 +28,108 @@ export function Hero() {
     }, 60);
   };
 
+  const exploreCategories = () => {
+    setView("store");
+    setTimeout(() => {
+      document
+        .getElementById("categories")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+  };
+
   return (
-    <section className="relative isolate overflow-hidden bg-maroon">
-      {/* Background image with cinematic overlay */}
-      <div className="absolute inset-0 -z-10">
-        { }
+    <section className="relative isolate overflow-hidden bg-[#F8F3EE] border-b border-[#E8DAD5]">
+      {/* Background with luxury subtle warm styling */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
         <img
           src="/products/hero.png"
-          alt="Bhaama Veedhi fine jewelry"
-          className="h-full w-full object-cover opacity-40"
+          alt="Bhaama Veedhi jewellery aesthetic"
+          className="h-full w-full object-cover object-center opacity-30 mix-blend-multiply"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-maroon-dark/90 via-maroon/80 to-maroon-dark/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F8F3EE]/80 via-[#F8F3EE]/60 to-[#F8F3EE]" />
       </div>
 
-      {/* Glowing gold accents */}
-      <div className="pointer-events-none absolute -left-24 top-10 size-72 rounded-full bg-gold/20 blur-3xl glow-gold" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 size-96 rounded-full bg-gold/15 blur-3xl glow-gold" />
+      {/* Decorative Champagne Gold ambient glows */}
+      <div className="pointer-events-none absolute -left-20 top-12 size-80 rounded-full bg-[#D6B98C]/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-10 size-96 rounded-full bg-[#E8DAD5]/40 blur-3xl" />
 
-      <div className="mx-auto flex min-h-[78vh] max-w-7xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[74vh] max-w-5xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8">
+        {/* Caption */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-2 rounded-full border border-gold/40 bg-cream/5 px-4 py-1.5 backdrop-blur-sm"
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-2 mb-4"
         >
-          <Sparkles className="size-4 text-gold-light" />
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-gold-light">
-            Handcrafted Fine Jewelry
+          <span className="h-px w-6 bg-[#D6B98C]" />
+          <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#8B6C61]">
+            A Little Something Beautiful
           </span>
+          <span className="h-px w-6 bg-[#D6B98C]" />
         </motion.div>
 
+        {/* Main Title */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-4xl font-serif text-4xl font-bold leading-tight text-cream sm:text-5xl md:text-6xl lg:text-7xl"
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] text-[#6B2C3E] max-w-4xl"
         >
-          Every woman deserves a little{" "}
-          <span className="text-gold-gradient">sparkle</span> in her everyday
-          story <span className="inline-block animate-pulse">✨</span>
+          Everyday Elegance,
+          <span className="block italic font-normal mt-1 sm:mt-2 text-[#6B2C3E]">
+            Made for You.
+          </span>
         </motion.h1>
 
+        {/* Description */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-2xl text-base text-cream/80 sm:text-lg"
+          transition={{ duration: 0.8, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-xl text-sm sm:text-base md:text-lg text-[#493B37] font-normal leading-relaxed"
         >
-          Discover Bhaama Veedhi — a curated collection of timeless necklaces,
-          earrings, bangles & rings, crafted to become part of your everyday
-          narrative.
+          Discover jewellery that adds a little charm to every look. Handcrafted pieces
+          designed to celebrate confidence, beauty, and individuality.
         </motion.p>
 
+        {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
+          transition={{ duration: 0.8, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col sm:flex-row items-center gap-4"
         >
           <Button
             onClick={shopCollection}
             size="lg"
-            className="gap-2 bg-gold px-8 text-maroon-dark shadow-lg transition-all hover:bg-gold-light hover:shadow-gold/30"
+            className="w-full sm:w-auto px-8 py-3.5 bg-[#6B2C3E] text-white hover:bg-[#85374E] text-xs sm:text-sm font-semibold tracking-widest uppercase rounded-sm shadow-md transition-all hover:shadow-lg"
           >
-            Shop Collection
+            SHOP NOW
           </Button>
-          <a
-            href={`https://wa.me/${BRAND.whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md border border-cream/30 px-8 py-2.5 text-sm font-medium text-cream transition-colors hover:bg-cream/10"
+
+          <Button
+            onClick={exploreCategories}
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto px-8 py-3.5 border-[#6B2C3E] text-[#6B2C3E] hover:bg-[#E8DAD5]/40 text-xs sm:text-sm font-semibold tracking-widest uppercase rounded-sm transition-all"
           >
-            Talk to us on WhatsApp
-          </a>
+            EXPLORE CATEGORIES
+          </Button>
         </motion.div>
 
-        {/* Scroll hint */}
-        <motion.button
-          onClick={shopCollection}
+        {/* Trust badge note */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cream/60 transition-colors hover:text-gold-light"
-          aria-label="Scroll to collection"
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-10 flex items-center gap-4 text-[11px] text-[#8B6C61] tracking-wide"
         >
-          <ChevronDown className="size-6 animate-bounce" />
-        </motion.button>
+          <span>Free shipping above ₹499</span>
+          <span>•</span>
+          <span>Dainty & Everyday Wear</span>
+          <span>•</span>
+          <span>WhatsApp Assisted Order</span>
+        </motion.div>
       </div>
     </section>
   );

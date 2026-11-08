@@ -2,9 +2,9 @@
  * Bhaama Veedhi — shared helpers
  */
 
-/** Format a number (paise-free rupees) as Indian currency: Rs. 12,499 */
+/** Format a number (paise-free rupees) as Indian currency: ₹12,499 */
 export function formatINR(amount: number): string {
-  return "Rs. " + new Intl.NumberFormat("en-IN", {
+  return "₹" + new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 0,
   }).format(amount);
 }
@@ -14,11 +14,14 @@ export const WHATSAPP_NUMBER = "917337231094";
 
 export const BRAND = {
   name: "Bhaama Veedhi",
-  tagline: "Every woman deserves a little sparkle in her everyday story ✨",
+  subtitle: "STYLED FOR EVERY BHAAMA",
+  tagline: "Everyday Elegance, Made for You.",
+  quote: "A little love, a little sparkle & a whole lot of pretty ✨🤍",
   email: "bhaamaveedhi@gmail.com",
   phone: "+91 7337231094",
   whatsapp: "917337231094",
   instagram: "https://www.instagram.com/bhaama_veedhi?igsh=bXY3czU2MzQxaWx2",
+  instagramHandle: "@bhaama_veedhi",
 };
 
 /** Build the WhatsApp checkout URL with an order message */

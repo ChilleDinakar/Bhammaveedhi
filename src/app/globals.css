@@ -17,17 +17,21 @@
 
 @theme inline {
   /* Direct brand tokens (usable as bg-maroon, text-gold, bg-cream, font-serif) */
-  --color-maroon: #5E131D;
-  --color-maroon-light: #7A2230;
-  --color-maroon-dark: #420D14;
-  --color-gold: #B28A42;
-  --color-gold-light: #C9A45E;
-  --color-gold-dark: #8E6C2C;
-  --color-cream: #FCF8F5;
-  --color-cream-deep: #F3E9DE;
+  --color-maroon: #6B2C3E;
+  --color-maroon-light: #85374E;
+  --color-maroon-dark: #4A1D2B;
+  --color-gold: #D6B98C;
+  --color-gold-light: #E8D3B3;
+  --color-gold-dark: #B5945F;
+  --color-cream: #F8F3EE;
+  --color-cream-deep: #E8DAD5;
+  --color-blush: #E8DAD5;
+  --color-charcoal: #30272A;
+  --color-charcoal-muted: #493B37;
+  --color-brown-muted: #8B6C61;
 
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
 
   /* shadcn token mapping (keeps existing UI components on-brand) */
   --color-background: var(--background);
@@ -96,38 +100,38 @@
 
 :root {
   --radius: 0.5rem;
-  /* Brand palette wired into shadcn tokens */
-  --background: #FCF8F5;            /* cream */
-  --foreground: #2A1518;            /* dark maroon-charcoal */
-  --card: #FFFFFF;
-  --card-foreground: #2A1518;
+  /* Brand palette wired into shadcn tokens (Minimal Luxury) */
+  --background: #F8F3EE;            /* warm ivory */
+  --foreground: #30272A;            /* charcoal */
+  --card: #FFFFFF;                  /* pure white */
+  --card-foreground: #30272A;
   --popover: #FFFFFF;
-  --popover-foreground: #2A1518;
-  --primary: #5E131D;               /* deep maroon */
-  --primary-foreground: #FCF8F5;    /* cream */
-  --secondary: #B28A42;             /* antique gold */
-  --secondary-foreground: #FFFFFF;
-  --muted: #F3E9DE;                 /* warm muted */
-  --muted-foreground: #6B5B4F;
-  --accent: #F6E9D6;                /* soft gold tint */
-  --accent-foreground: #5E131D;
+  --popover-foreground: #30272A;
+  --primary: #6B2C3E;               /* Bhaama maroon */
+  --primary-foreground: #FFFFFF;
+  --secondary: #D6B98C;             /* champagne gold */
+  --secondary-foreground: #30272A;
+  --muted: #E8DAD5;                 /* dusty blush */
+  --muted-foreground: #8B6C61;      /* warm muted brown */
+  --accent: #E8DAD5;                /* dusty blush tint */
+  --accent-foreground: #6B2C3E;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #E5D9CC;                /* warm border */
-  --input: #E5D9CC;
-  --ring: #B28A42;                  /* gold focus ring */
-  --chart-1: #5E131D;
-  --chart-2: #B28A42;
-  --chart-3: #C9A45E;
-  --chart-4: #7A2230;
-  --chart-5: #8E6C2C;
-  --sidebar: #FCF8F5;
-  --sidebar-foreground: #2A1518;
-  --sidebar-primary: #5E131D;
-  --sidebar-primary-foreground: #FCF8F5;
-  --sidebar-accent: #F6E9D6;
-  --sidebar-accent-foreground: #5E131D;
-  --sidebar-border: #E5D9CC;
-  --sidebar-ring: #B28A42;
+  --border: #E8DAD5;                /* soft border */
+  --input: #E8DAD5;
+  --ring: #D6B98C;                  /* champagne gold focus ring */
+  --chart-1: #6B2C3E;
+  --chart-2: #D6B98C;
+  --chart-3: #85374E;
+  --chart-4: #E8DAD5;
+  --chart-5: #B5945F;
+  --sidebar: #F8F3EE;
+  --sidebar-foreground: #30272A;
+  --sidebar-primary: #6B2C3E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E8DAD5;
+  --sidebar-accent-foreground: #6B2C3E;
+  --sidebar-border: #E8DAD5;
+  --sidebar-ring: #D6B98C;
 }
 
 .dark {
