@@ -39,6 +39,7 @@ export function QuickViewDialog() {
 
 function QuickViewContent({ product }: { product: Product }) {
   const close = useStore((s) => s.closeQuickView);
+  const openPolicy = useStore((s) => s.openPolicy);
   const addToCart = useStore((s) => s.addToCart);
   const { toast } = useToast();
   const [qty, setQty] = useState(1);
@@ -175,6 +176,20 @@ function QuickViewContent({ product }: { product: Product }) {
           <ShoppingBag className="size-4" />
           {product.inStock ? "Add to Cart" : "Sold Out"}
         </Button>
+
+        <div className="mt-3 flex items-center justify-between text-[11px] text-[#8B6C61]">
+          <span>🚚 Free shipping over ₹499</span>
+          <button
+            type="button"
+            onClick={() => {
+              close();
+              openPolicy("returns");
+            }}
+            className="underline underline-offset-2 hover:text-[#6B2C3E] transition-colors"
+          >
+            48-hr returns policy
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -15,10 +15,12 @@ import { useState } from "react";
 import { Instagram, MessageCircle, ArrowRight, Heart } from "lucide-react";
 import { BRAND } from "@/lib/format";
 import { useToast } from "@/hooks/use-toast";
+import { useStore } from "@/store/useStore";
 
 export function Footer() {
   const [email, setEmail] = useState("");
   const { toast } = useToast();
+  const openPolicy = useStore((s) => s.openPolicy);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,34 +103,28 @@ export function Footer() {
             </h4>
             <ul className="flex flex-col gap-2 text-xs sm:text-sm text-[#F8F3EE]/85 font-sans">
               <li>
-                <a
-                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! What is your shipping policy?")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-[#D6B98C]"
+                <button
+                  onClick={() => openPolicy("shipping")}
+                  className="text-left transition-colors hover:text-[#D6B98C]"
                 >
                   Shipping Policy
-                </a>
+                </button>
               </li>
               <li>
-                <a
-                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! What is your return & exchange policy?")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-[#D6B98C]"
+                <button
+                  onClick={() => openPolicy("returns")}
+                  className="text-left transition-colors hover:text-[#D6B98C]"
                 >
-                  Return & Exchange
-                </a>
+                  Return & Refund Policy
+                </button>
               </li>
               <li>
-                <a
-                  href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! What is your privacy policy?")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-[#D6B98C]"
+                <button
+                  onClick={() => openPolicy("privacy")}
+                  className="text-left transition-colors hover:text-[#D6B98C]"
                 >
                   Privacy Policy
-                </a>
+                </button>
               </li>
             </ul>
           </div>

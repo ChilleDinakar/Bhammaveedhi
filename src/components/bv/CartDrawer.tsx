@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 export function CartDrawer() {
   const open = useStore((s) => s.cartOpen);
   const setOpen = useStore((s) => s.closeCart);
+  const openPolicy = useStore((s) => s.openPolicy);
   const items = useStore((s) => s.items);
   const total = useStore(selectCartTotal);
   const updateQuantity = useStore((s) => s.updateQuantity);
@@ -185,6 +186,23 @@ export function CartDrawer() {
               <p className="mt-2 text-center text-[11px] text-[#8B6C61]">
                 Dispatches in 3–4 business days across India ♡
               </p>
+              <div className="mt-1.5 flex items-center justify-center gap-3 text-[10px] text-[#8B6C61]/80">
+                <button
+                  type="button"
+                  onClick={() => openPolicy("shipping")}
+                  className="underline underline-offset-2 hover:text-[#6B2C3E] transition-colors"
+                >
+                  Shipping Policy
+                </button>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={() => openPolicy("returns")}
+                  className="underline underline-offset-2 hover:text-[#6B2C3E] transition-colors"
+                >
+                  Return Policy
+                </button>
+              </div>
             </div>
           </>
         )}

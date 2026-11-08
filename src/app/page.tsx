@@ -26,6 +26,7 @@ import { Navbar } from "@/components/bv/Navbar";
 import { Footer } from "@/components/bv/Footer";
 import { CartDrawer } from "@/components/bv/CartDrawer";
 import { QuickViewDialog } from "@/components/bv/QuickViewDialog";
+import { PolicyDialog } from "@/components/bv/PolicyDialog";
 import { StoreFront } from "@/components/bv/StoreFront";
 import { LoginPage } from "@/components/bv/LoginPage";
 import { AdminDashboard } from "@/components/bv/AdminDashboard";
@@ -90,6 +91,7 @@ export default function Home() {
       {/* Global overlays */}
       <CartDrawer />
       <QuickViewDialog />
+      <PolicyDialog />
     </div>
   );
 }

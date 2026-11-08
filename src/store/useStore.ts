@@ -38,6 +38,7 @@ export type SessionUser = {
 };
 
 export type View = "store" | "login" | "admin";
+export type PolicyTab = "returns" | "shipping" | "privacy";
 
 type StoreState = {
   /* Cart */
@@ -49,6 +50,8 @@ type StoreState = {
   user: SessionUser | null;
   /* Quick view */
   quickViewProduct: Product | null;
+  /* Policy Dialog */
+  policyModal: PolicyTab | null;
   /* Filters */
   activeCategory: string;
   searchQuery: string;
@@ -75,6 +78,10 @@ type StoreState = {
   openQuickView: (product: Product) => void;
   closeQuickView: () => void;
 
+  /* Policy Dialog */
+  openPolicy: (tab?: PolicyTab) => void;
+  closePolicy: () => void;
+
   /* Filters */
   setCategory: (category: string) => void;
   setSearchQuery: (query: string) => void;
@@ -91,6 +98,7 @@ export const useStore = create<StoreState>()(
       view: "store",
       user: null,
       quickViewProduct: null,
+      policyModal: null,
       activeCategory: "All",
       searchQuery: "",
       products: [],
@@ -143,6 +151,9 @@ export const useStore = create<StoreState>()(
 
       openQuickView: (product) => set({ quickViewProduct: product }),
       closeQuickView: () => set({ quickViewProduct: null }),
+
+      openPolicy: (tab = "returns") => set({ policyModal: tab }),
+      closePolicy: () => set({ policyModal: null }),
 
       setCategory: (category) => set({ activeCategory: category }),
       setSearchQuery: (query) => set({ searchQuery: query }),
