@@ -5,11 +5,9 @@
  * Exactly matched to user interface mockup:
  * 1. Hero Banner (left typography + right scalloped dish)
  * 2. ✦ Shop by Category ✦ (4 cards: Earrings, Necklaces, Bracelets, Chains)
- * 3. ✦ New Arrivals ✦ (Banner with bow necklace & "EXPLORE COLLECTION →")
- * 4. Product Catalog Grid (Category tabs, live search, quick view & cart)
- * 5. The Story of Bhaama Veedhi (Deep Maroon with golden lotus art & "OUR STORY →")
- * 6. ✦ Our Happy Customers ✦ (3 customer review cards with circular avatars)
- * 7. ✦ Follow Us On Instagram ✦ (6 photo tiles)
+ * 3. Product Catalog Grid (Category tabs, live search, quick view & cart)
+ * 4. ✦ Our Happy Customers ✦ (3 customer review cards with circular avatars)
+ * 5. ✦ Follow Us On Instagram ✦ (6 photo tiles)
  */
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
@@ -197,46 +195,7 @@ export function StoreFront() {
         </div>
       </section>
 
-      {/* 3. New Arrivals Banner */}
-      <section className="bg-[#FAF6F0] py-8 sm:py-12 border-b border-[#E8DAD5]/60 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl border border-[#E5D7CE] bg-gradient-to-r from-[#FAF2EC] via-[#FDF8F5] to-[#F5E6DC] shadow-sm">
-            <div className="grid grid-cols-1 md:grid-cols-12 items-center">
-              {/* Left/Center Content */}
-              <div className="md:col-span-7 lg:col-span-8 p-8 sm:p-12 md:p-16 flex flex-col items-center md:items-start text-center md:text-left z-10">
-                <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-[#592534] flex items-center gap-2">
-                  <span className="text-[#D6B98C] text-sm">✦</span>
-                  New Arrivals
-                  <span className="text-[#D6B98C] text-sm">✦</span>
-                </h3>
-                <p className="mt-2 text-sm sm:text-base text-[#6B554F] font-sans">
-                  Discover your new favourites ♡
-                </p>
-
-                <div className="mt-6">
-                  <button
-                    onClick={() => selectCategoryAndScroll("All")}
-                    className="rounded-full border border-[#6B2C3E] px-7 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#6B2C3E] transition-all hover:bg-[#6B2C3E] hover:text-white hover:shadow-md"
-                  >
-                    EXPLORE COLLECTION →
-                  </button>
-                </div>
-              </div>
-
-              {/* Right Bow Necklace Visual */}
-              <div className="md:col-span-5 lg:col-span-4 h-48 sm:h-64 md:h-full overflow-hidden flex items-center justify-center">
-                <img
-                  src="/brand/new-arrivals-bow.jpg"
-                  alt="Gold bow necklace on champagne silk drape"
-                  className="h-full w-full object-cover object-center"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Product Catalog / Collection Grid */}
+      {/* 3. Product Catalog / Collection Grid */}
       <section id="collection" className="bg-[#FAF6F0] py-14 sm:py-16 border-b border-[#E8DAD5]/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -317,53 +276,7 @@ export function StoreFront() {
         </div>
       </section>
 
-      {/* 5. The Story of Bhaama Veedhi (Deep Maroon Banner) */}
-      <section id="story" className="bg-[#6B2C3E] text-[#FAF6F0] py-14 sm:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="mx-auto max-w-7xl relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Left Golden Lotus Art */}
-          <div className="hidden lg:flex items-center justify-center shrink-0 opacity-85">
-            <img
-              src="/brand/lotus.svg"
-              alt=""
-              className="h-16 w-auto object-contain drop-shadow-sm"
-            />
-          </div>
-
-          {/* Center Story Content */}
-          <div className="flex-1 text-center md:text-left max-w-2xl">
-            <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-white mb-2">
-              The Story of Bhaama Veedhi
-            </h3>
-            <p className="text-xs sm:text-sm text-[#F8F3EE]/90 leading-relaxed font-sans">
-              A place where every Bhaama finds her style.
-              <br />
-              Jewellery that celebrates confidence, beauty and individuality.
-            </p>
-          </div>
-
-          {/* Right Button & Lotus Art */}
-          <div className="flex items-center gap-6 shrink-0">
-            <a
-              href={`https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent("Hi Bhaama Veedhi! I would love to learn more about your pieces and custom styling ♡")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-white px-7 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-all hover:bg-white hover:text-[#6B2C3E] hover:shadow-md"
-            >
-              OUR STORY →
-            </a>
-
-            <div className="hidden lg:flex items-center justify-center opacity-85">
-              <img
-                src="/brand/lotus.svg"
-                alt=""
-                className="h-16 w-auto object-contain drop-shadow-sm scale-x-[-1]"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Our Happy Customers */}
+      {/* 4. Our Happy Customers */}
       <section id="reviews" className="bg-[#FAF6F0] py-14 sm:py-16 border-b border-[#E8DAD5]/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Heading with horizontal rules */}

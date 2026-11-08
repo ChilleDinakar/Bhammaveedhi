@@ -145,10 +145,10 @@ export function Navbar() {
                     Shop
                   </button>
                   <button
-                    onClick={() => scrollToSection("story")}
+                    onClick={() => scrollToSection("reviews")}
                     className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#30272A] hover:bg-[#E8DAD5]/60 hover:text-[#6B2C3E]"
                   >
-                    About Us
+                    Reviews
                   </button>
                   <button
                     onClick={() => scrollToSection("footer")}
@@ -201,10 +201,10 @@ export function Navbar() {
                 Shop
               </button>
               <button
-                onClick={() => scrollToSection("story")}
+                onClick={() => scrollToSection("reviews")}
                 className="text-sm font-medium tracking-wide transition-colors text-[#30272A] hover:text-[#6B2C3E]"
               >
-                About Us
+                Reviews
               </button>
               <button
                 onClick={() => scrollToSection("footer")}

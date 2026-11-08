@@ -75,10 +75,10 @@ export function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollTo("story")}
+                  onClick={() => scrollTo("reviews")}
                   className="transition-colors hover:text-[#D6B98C]"
                 >
-                  About Us
+                  Customer Reviews
                 </button>
               </li>
               <li>
