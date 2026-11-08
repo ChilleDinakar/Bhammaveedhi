@@ -112,7 +112,7 @@ export function Navbar() {
                 <SheetHeader>
                   <div className="flex items-center gap-3">
                     <img
-                      src="/brand/logo.svg"
+                      src="/brand/logo.png"
                       alt="Bhaama Veedhi"
                       className="h-16 w-auto object-contain"
                     />
@@ -226,9 +226,9 @@ export function Navbar() {
               aria-label="Bhaama Veedhi Home"
             >
               <img
-                src="/brand/logo.svg"
+                src="/brand/logo.png"
                 alt="Bhaama Veedhi — Styled for Every Bhaama"
-                className="h-16 sm:h-20 w-auto object-contain drop-shadow-xs"
+                className="h-16 sm:h-20 w-auto object-contain drop-shadow-xs transition-transform group-hover:scale-102"
               />
             </button>
           </div>

@@ -43,7 +43,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Bhaama Veedhi" }],
   icons: {
-    icon: "/logo.svg",
+    icon: "/brand/logo.png",
+    shortcut: "/favicon.ico",
+    apple: "/brand/logo.png",
   },
   openGraph: {
     title: "Bhaama Veedhi — Everyday Elegance, Made for You ✨",

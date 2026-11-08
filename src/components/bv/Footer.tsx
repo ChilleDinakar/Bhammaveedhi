@@ -52,9 +52,9 @@ export function Footer() {
               aria-label="Back to top"
             >
               <img
-                src="/brand/footer-logo.svg"
+                src="/brand/logo.png"
                 alt="Bhaama Veedhi — Styled for Every Bhaama"
-                className="h-20 sm:h-24 w-auto object-contain transition-transform group-hover:scale-102"
+                className="h-24 sm:h-28 w-auto object-contain transition-transform group-hover:scale-102 drop-shadow-md"
               />
             </button>
           </div>
