@@ -28,15 +28,10 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#FAF6F0] border-b border-[#E8DAD5]/60">
-      {/* Background silk drapery texture */}
-      <div className="absolute inset-0 -z-10 overflow-hidden opacity-35 mix-blend-multiply">
-        <img
-          src="/brand/hero-banner.jpg"
-          alt=""
-          className="h-full w-full object-cover object-center filter blur-[1px]"
-        />
-      </div>
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#FAF6F0] via-[#FDFBF7] to-[#F5ECE3] border-b border-[#E8DAD5]/60">
+      {/* Subtle warm ambient glows */}
+      <div className="pointer-events-none absolute -left-20 top-0 size-96 rounded-full bg-[#D6B98C]/15 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 size-96 rounded-full bg-[#E8DAD5]/40 blur-3xl" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -137,9 +132,10 @@ export function Hero() {
           >
             <div className="relative w-full max-w-lg overflow-hidden rounded-3xl shadow-xl border border-[#D6B98C]/30 bg-white/40 backdrop-blur-xs group">
               <img
-                src="/brand/hero-plate.jpg"
+                src="/brand/hero-plate-v2.jpg"
                 alt="Bhaama Veedhi bow earrings displayed on scalloped ceramic dish"
                 className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-104"
+                loading="eager"
               />
               {/* Subtle ambient light glow */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF6F0]/20 via-transparent to-transparent" />
