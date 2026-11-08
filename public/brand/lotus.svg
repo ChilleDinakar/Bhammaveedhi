@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" fill="none" stroke="#D6B98C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Central Petal -->
+  <path d="M60 12 C55 28 53 45 60 58 C67 45 65 28 60 12 Z" fill="#D6B98C" fill-opacity="0.12"/>
+  <!-- Inner Left Petal -->
+  <path d="M60 58 C46 54 36 38 42 22 C48 35 55 48 60 58 Z" fill="#D6B98C" fill-opacity="0.08"/>
+  <!-- Inner Right Petal -->
+  <path d="M60 58 C74 54 84 38 78 22 C72 35 65 48 60 58 Z" fill="#D6B98C" fill-opacity="0.08"/>
+  <!-- Mid Left Petal -->
+  <path d="M60 58 C36 56 22 42 28 30 C37 42 48 52 60 58 Z" />
+  <!-- Mid Right Petal -->
+  <path d="M60 58 C84 56 98 42 92 30 C83 42 72 52 60 58 Z" />
+  <!-- Outer Far Left Petal -->
+  <path d="M60 62 C30 64 12 52 14 44 C24 55 42 60 60 62 Z" />
+  <!-- Outer Far Right Petal -->
+  <path d="M60 62 C90 64 108 52 106 44 C96 55 78 60 60 62 Z" />
+  <!-- Base Lotus Calyx / Waves -->
+  <path d="M38 65 C48 68 72 68 82 65 C76 72 44 72 38 65 Z" fill="#D6B98C" fill-opacity="0.25" />
+  <path d="M26 68 C45 74 75 74 94 68" stroke-dasharray="2 2" stroke-width="1.2" opacity="0.6"/>
+</svg>
+

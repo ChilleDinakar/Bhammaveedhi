@@ -323,9 +323,9 @@ export function StoreFront() {
           {/* Left Golden Lotus Art */}
           <div className="hidden lg:flex items-center justify-center shrink-0 opacity-85">
             <img
-              src="/brand/lotus-left.jpg"
+              src="/brand/lotus.svg"
               alt=""
-              className="h-14 w-auto object-contain mix-blend-screen"
+              className="h-16 w-auto object-contain drop-shadow-sm"
             />
           </div>
 
@@ -354,9 +354,9 @@ export function StoreFront() {
 
             <div className="hidden lg:flex items-center justify-center opacity-85">
               <img
-                src="/brand/lotus-right.jpg"
+                src="/brand/lotus.svg"
                 alt=""
-                className="h-14 w-auto object-contain mix-blend-screen"
+                className="h-16 w-auto object-contain drop-shadow-sm scale-x-[-1]"
               />
             </div>
           </div>

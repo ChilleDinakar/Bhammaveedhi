@@ -112,9 +112,9 @@ export function Navbar() {
                 <SheetHeader>
                   <div className="flex items-center gap-3">
                     <img
-                      src="/brand/header-logo.png"
+                      src="/brand/logo.svg"
                       alt="Bhaama Veedhi"
-                      className="h-14 w-auto object-contain"
+                      className="h-16 w-auto object-contain"
                     />
                     <div>
                       <SheetTitle className="font-serif text-xl text-[#6B2C3E] text-left">
@@ -226,9 +226,9 @@ export function Navbar() {
               aria-label="Bhaama Veedhi Home"
             >
               <img
-                src="/brand/header-logo.png"
+                src="/brand/logo.svg"
                 alt="Bhaama Veedhi — Styled for Every Bhaama"
-                className="h-14 sm:h-16 w-auto object-contain drop-shadow-xs"
+                className="h-16 sm:h-20 w-auto object-contain drop-shadow-xs"
               />
             </button>
           </div>
