@@ -61,7 +61,8 @@ export function CartDrawer() {
   const currentUser = useStore((s) => s.user);
   const { toast } = useToast();
 
-  const [step, setStep] = useState<"cart" | "address">("cart");
+  const step = useStore((s) => s.cartStep);
+  const setStep = useStore((s) => s.setCartStep);
   const [savedAddress, setSavedAddress] = useState<DeliveryAddress | null>(null);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [saveForFuture, setSaveForFuture] = useState(true);

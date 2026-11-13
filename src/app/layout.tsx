@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { BackNavigationManager } from "@/components/bv/BackNavigationManager";
 
 /* ============================================================
    BHAAMA VEEDHI — Typography (Brand Direction: Minimal Luxury)
@@ -67,6 +68,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${cormorant.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
+        <BackNavigationManager />
         <Toaster />
       </body>
     </html>

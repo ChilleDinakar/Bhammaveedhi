@@ -44,8 +44,10 @@ type StoreState = {
   /* Cart */
   items: CartItem[];
   cartOpen: boolean;
+  cartStep: "cart" | "address";
   /* Navigation */
   view: View;
+  mobileMenuOpen: boolean;
   /* Auth */
   user: SessionUser | null;
   /* Quick view */
@@ -66,9 +68,11 @@ type StoreState = {
   clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;
+  setCartStep: (step: "cart" | "address") => void;
 
   /* Navigation actions */
   setView: (view: View) => void;
+  setMobileMenuOpen: (open: boolean) => void;
 
   /* Auth actions */
   setUser: (user: SessionUser | null) => void;
@@ -95,7 +99,9 @@ export const useStore = create<StoreState>()(
     (set, get) => ({
       items: [],
       cartOpen: false,
+      cartStep: "cart",
       view: "store",
+      mobileMenuOpen: false,
       user: null,
       quickViewProduct: null,
       policyModal: null,
@@ -137,7 +143,8 @@ export const useStore = create<StoreState>()(
 
       clearCart: () => set({ items: [] }),
       openCart: () => set({ cartOpen: true }),
-      closeCart: () => set({ cartOpen: false }),
+      closeCart: () => set({ cartOpen: false, cartStep: "cart" }),
+      setCartStep: (cartStep) => set({ cartStep }),
 
       setView: (view) => {
         set({ view });
@@ -145,6 +152,7 @@ export const useStore = create<StoreState>()(
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       },
+      setMobileMenuOpen: (mobileMenuOpen) => set({ mobileMenuOpen }),
 
       setUser: (user) => set({ user }),
       logout: () => set({ user: null, view: "store" }),

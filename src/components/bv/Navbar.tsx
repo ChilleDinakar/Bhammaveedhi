@@ -53,8 +53,9 @@ export function Navbar() {
   const products = useStore((s) => s.products);
   const searchQuery = useStore((s) => s.searchQuery);
   const setSearchQuery = useStore((s) => s.setSearchQuery);
+  const mobileOpen = useStore((s) => s.mobileMenuOpen);
+  const setMobileOpen = useStore((s) => s.setMobileMenuOpen);
 
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   const categories = useMemo(() => {
